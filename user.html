@@ -1022,6 +1022,22 @@
             border-radius: 12px;
         }
 
+        /* Error Message */
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .error-message i {
+            color: var(--danger);
+            margin-right: 10px;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .header-content {
@@ -1439,14 +1455,13 @@
         // Firebase Configuration
         // Replace with your Firebase config
         const firebaseConfig = {
-  apiKey: "AIzaSyCwll-R6_LNPhCt6bFitr2zu_o2XHM5EqU",
-  authDomain: "alpha-notes-app-550d3.firebaseapp.com",
-  databaseURL: "https://alpha-notes-app-550d3-default-rtdb.firebaseio.com",
-  projectId: "alpha-notes-app-550d3",
-  storageBucket: "alpha-notes-app-550d3.firebasestorage.app",
-  messagingSenderId: "600503443065",
-  appId: "1:600503443065:web:e4c4b225745d5ef6b33ea8"
-};
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -2057,14 +2072,28 @@
             }
         }
 
-        // Load Orders
+        // Load Orders - Fixed with better error handling
         async function loadOrders() {
+            const ordersList = document.getElementById('ordersList');
+            
             if (!currentUser) {
-                document.getElementById('ordersList').innerHTML = '<p>Please login to view your orders</p>';
+                ordersList.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Please login to view your orders</p>
+                    </div>
+                `;
                 return;
             }
             
             try {
+                // Show loading state
+                ordersList.innerHTML = `
+                    <div class="loader">
+                        <div class="spinner"></div>
+                    </div>
+                `;
+                
                 const snapshot = await db.collection('orders')
                     .where('userId', '==', currentUser.uid)
                     .orderBy('createdAt', 'desc')
@@ -2075,10 +2104,29 @@
                     orders.push({ id: doc.id, ...doc.data() });
                 });
                 
+                if (orders.length === 0) {
+                    ordersList.innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-info-circle"></i>
+                            <p>You have no orders yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
                 displayOrders();
             } catch (error) {
                 console.error('Error loading orders:', error);
-                showToast('Failed to load orders', 'error');
+                ordersList.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load orders. Please try again later.</p>
+                        <button class="btn btn-primary" onclick="loadOrders()" style="margin-top: 10px;">
+                            <i class="fas fa-redo"></i>
+                            Retry
+                        </button>
+                    </div>
+                `;
             }
         }
 
@@ -2087,7 +2135,12 @@
             const container = document.getElementById('ordersList');
             
             if (orders.length === 0) {
-                container.innerHTML = '<p>You have no orders yet</p>';
+                container.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-info-circle"></i>
+                        <p>You have no orders yet</p>
+                    </div>
+                `;
                 return;
             }
             
@@ -2153,7 +2206,12 @@
         // Load Wishlist
         async function loadWishlist() {
             if (!currentUser) {
-                document.getElementById('wishlistGrid').innerHTML = '<p>Please login to view your wishlist</p>';
+                document.getElementById('wishlistGrid').innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Please login to view your wishlist</p>
+                    </div>
+                `;
                 return;
             }
             
@@ -2182,7 +2240,12 @@
             badge.textContent = wishlist.length;
             
             if (wishlist.length === 0) {
-                container.innerHTML = '<p>Your wishlist is empty</p>';
+                container.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Your wishlist is empty</p>
+                    </div>
+                `;
                 return;
             }
             
