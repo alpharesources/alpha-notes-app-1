@@ -685,84 +685,6 @@
             opacity: 0.5;
         }
 
-        /* Login Screen */
-        .login-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--dark) 0%, #1a1f3a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 5000;
-        }
-
-        .login-container {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 40px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .login-logo {
-            font-size: 2rem;
-            font-weight: bold;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .login-title {
-            color: var(--text-dim);
-            font-size: 1rem;
-        }
-
-        /* Auth Form */
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .form-group label {
-            font-weight: 600;
-        }
-
-        .form-group input {
-            padding: 10px 15px;
-            border-radius: 8px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            color: var(--text);
-            outline: none;
-        }
-
-        .form-group input:focus {
-            border-color: var(--primary);
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
             .header-content {
@@ -791,32 +713,6 @@
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div class="login-screen" id="loginScreen">
-        <div class="login-container">
-            <div class="login-header">
-                <div class="login-logo">
-                    <i class="fas fa-graduation-cap"></i>
-                    Alpha Notes
-                </div>
-                <div class="login-title">Login to access premium study materials</div>
-            </div>
-            <form class="auth-form" id="loginForm">
-                <div class="form-group">
-                    <label for="loginUsername">Username</label>
-                    <input type="text" id="loginUsername" placeholder="Enter username" required>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Login
-                </button>
-            </form>
-        </div>
-    </div>
-
     <!-- Header -->
     <header>
         <div class="container">
@@ -833,9 +729,6 @@
                     <div class="icon-btn" id="wishlistBtn">
                         <i class="far fa-heart"></i>
                         <span class="badge" id="wishlistCount">0</span>
-                    </div>
-                    <div class="icon-btn" id="logoutBtn">
-                        <i class="fas fa-sign-out-alt"></i>
                     </div>
                 </div>
             </div>
@@ -1022,7 +915,6 @@
         const db = firebase.firestore();
 
         // App State
-        let isLoggedIn = false;
         let wishlist = [];
         let products = [];
         let orders = [];
@@ -1032,13 +924,6 @@
 
         // DOM Elements
         const elements = {
-            // Login
-            loginScreen: document.getElementById('loginScreen'),
-            loginForm: document.getElementById('loginForm'),
-            loginUsername: document.getElementById('loginUsername'),
-            loginPassword: document.getElementById('loginPassword'),
-            logoutBtn: document.getElementById('logoutBtn'),
-            
             // Pages
             homePage: document.getElementById('homePage'),
             ordersPage: document.getElementById('ordersPage'),
@@ -1085,18 +970,14 @@
             // Set up event listeners
             setupEventListeners();
             
-            // Check if user is logged in
-            checkLoginStatus();
+            // Load data
+            loadProducts();
+            loadWishlist();
+            loadUserOrders();
         }
 
         // Setup Event Listeners
         function setupEventListeners() {
-            // Login form
-            elements.loginForm.addEventListener('submit', handleLogin);
-            
-            // Logout button
-            elements.logoutBtn.addEventListener('click', logout);
-            
             // Navigation
             elements.navItems.forEach(item => {
                 item.addEventListener('click', () => {
@@ -1150,53 +1031,6 @@
             // Payment
             elements.cancelPaymentBtn.addEventListener('click', closePaymentModal);
             elements.confirmPaymentBtn.addEventListener('click', confirmPayment);
-        }
-
-        // Handle Login
-        function handleLogin(e) {
-            e.preventDefault();
-            
-            const username = elements.loginUsername.value.trim();
-            const password = elements.loginPassword.value.trim();
-            
-            // Check hardcoded credentials
-            if (username === 'zyro' && password === '6969') {
-                isLoggedIn = true;
-                localStorage.setItem('isLoggedIn', 'true');
-                elements.loginScreen.style.display = 'none';
-                showToast('Login successful!', 'success');
-                
-                // Load data after login
-                loadProducts();
-                loadWishlist();
-                loadUserOrders();
-            } else {
-                showToast('Invalid username or password', 'error');
-            }
-        }
-
-        // Logout
-        function logout() {
-            isLoggedIn = false;
-            localStorage.removeItem('isLoggedIn');
-            elements.loginScreen.style.display = 'flex';
-            showToast('Logged out successfully', 'success');
-        }
-
-        // Check Login Status
-        function checkLoginStatus() {
-            const savedLoginStatus = localStorage.getItem('isLoggedIn');
-            if (savedLoginStatus === 'true') {
-                isLoggedIn = true;
-                elements.loginScreen.style.display = 'none';
-                
-                // Load data
-                loadProducts();
-                loadWishlist();
-                loadUserOrders();
-            } else {
-                elements.loginScreen.style.display = 'flex';
-            }
         }
 
         // Page Navigation
@@ -1600,7 +1434,7 @@
                 
                 const orderData = {
                     orderId: orderId,
-                    userId: 'zyro', // Hardcoded user ID
+                    userId: 'guest', // Changed from hardcoded user ID to 'guest'
                     products: items.map(item => ({
                         id: item.id,
                         title: item.title,
@@ -1647,7 +1481,7 @@
         async function loadUserOrders() {
             try {
                 const snapshot = await db.collection('orders')
-                    .where('userId', '==', 'zyro') // Hardcoded user ID
+                    .where('userId', '==', 'guest') // Changed from hardcoded user ID to 'guest'
                     .orderBy('createdAt', 'desc')
                     .get();
                 
