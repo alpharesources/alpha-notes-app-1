@@ -733,8 +733,8 @@
 
         .order-footer {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+-between;
+            align-items            justify-content: space: center;
         }
 
         .order-total {
@@ -1375,7 +1375,6 @@
   messagingSenderId: "600503443065",
   appId: "1:600503443065:web:e4c4b225745d5ef6b33ea8"
 };
-
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
@@ -1392,7 +1391,8 @@
             currentCategory: 'all',
             currentSort: 'featured',
             searchQuery: '',
-            selectedProduct: null
+            selectedProduct: null,
+            isOrdersLoading: false
         };
 
         // DOM Elements
@@ -1996,38 +1996,47 @@
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
+            // Add order to Firestore
             db.collection('orders').add(orderData)
                 .then(docRef => {
+                    const orderId = docRef.id;
+                    
                     if (status === 'free') {
                         // For free orders, mark as paid immediately
                         return docRef.update({ 
                             status: 'paid', 
                             paidAt: firebase.firestore.FieldValue.serverTimestamp() 
+                        }).then(() => {
+                            // Add to local orders array immediately
+                            const newOrder = {
+                                id: orderId,
+                                ...orderData,
+                                status: 'paid',
+                                paidAt: new Date()
+                            };
+                            app.orders.unshift(newOrder);
+                            
+                            // Clear cart and show success message
+                            app.cart = [];
+                            saveCartToStorage();
+                            renderCart();
+                            updateCartCount();
+                            elements.cartSidebar.classList.remove('active');
+                            
+                            // Show file link popup for free products
+                            showFileLinkPopup(orderData.products);
+                            
+                            showToast('Order placed successfully!', 'success');
+                            navigateToPage('orders');
                         });
                     } else {
                         // For paid orders, initiate payment
-                        initiatePayment(docRef.id, total, orderId);
-                    }
-                })
-                .then(() => {
-                    if (status === 'free') {
-                        // Clear cart and show success message
-                        app.cart = [];
-                        saveCartToStorage();
-                        renderCart();
-                        updateCartCount();
-                        elements.cartSidebar.classList.remove('active');
-                        
-                        // Show file link popup for free products
-                        showFileLinkPopup(orderData.products);
-                        
-                        // Reload orders to show in dashboard
-                        loadOrders();
+                        return initiatePayment(orderId, total, orderData.orderId);
                     }
                 })
                 .catch(error => {
                     console.error('Error creating order:', error);
-                    showToast('Failed to create order', 'error');
+                    showToast('Failed to create order. Please try again.', 'error');
                 });
         }
 
@@ -2035,7 +2044,7 @@
             // In a real implementation, you would integrate with a payment gateway like Razorpay
             // For this demo, we'll simulate payment success
             
-            showToast('Redirecting to payment...', 'info');
+            showToast('Processing payment...', 'info');
             
             // Simulate payment processing
             setTimeout(() => {
@@ -2049,31 +2058,42 @@
                     }
                 })
                 .then(() => {
-                    // Get the order data to show download links
-                    db.collection('orders').doc(orderId).get()
-                        .then(doc => {
-                            const orderData = doc.data();
-                            
-                            // Clear cart
-                            app.cart = [];
-                            saveCartToStorage();
-                            renderCart();
-                            updateCartCount();
-                            elements.cartSidebar.classList.remove('active');
-                            
-                            // Show file link popup
-                            showFileLinkPopup(orderData.products);
-                            
-                            // Reload orders to show in dashboard
-                            loadOrders();
-                            
-                            showToast('Payment successful! Check your orders for downloads.', 'success');
-                            navigateToPage('orders');
-                        });
+                    // Get the updated order
+                    return db.collection('orders').doc(orderId).get();
+                })
+                .then(doc => {
+                    const orderData = doc.data();
+                    
+                    // Add to local orders array
+                    const updatedOrder = {
+                        id: orderId,
+                        ...orderData
+                    };
+                    
+                    // Check if order already exists in local array
+                    const existingIndex = app.orders.findIndex(o => o.id === orderId);
+                    if (existingIndex >= 0) {
+                        app.orders[existingIndex] = updatedOrder;
+                    } else {
+                        app.orders.unshift(updatedOrder);
+                    }
+                    
+                    // Clear cart
+                    app.cart = [];
+                    saveCartToStorage();
+                    renderCart();
+                    updateCartCount();
+                    elements.cartSidebar.classList.remove('active');
+                    
+                    // Show file link popup
+                    showFileLinkPopup(orderData.products);
+                    
+                    showToast('Payment successful! Your order is confirmed.', 'success');
+                    navigateToPage('orders');
                 })
                 .catch(error => {
                     console.error('Error updating order:', error);
-                    showToast('Payment successful but failed to update order. Please contact support.', 'error');
+                    showToast('Payment processed but failed to update order. Please contact support.', 'error');
                 });
             }, 2000);
         }
@@ -2091,6 +2111,9 @@
                 // Show the first download link (or combine multiple if needed)
                 elements.fileLinkInput.value = downloadLinks[0];
                 elements.fileLinkPopup.classList.add('active');
+            } else {
+                // If no download link, show a message
+                showToast('Order confirmed! Download links will be sent to your email.', 'success');
             }
         }
 
@@ -2101,23 +2124,34 @@
                 return;
             }
 
+            // Prevent multiple simultaneous loads
+            if (app.isOrdersLoading) {
+                return;
+            }
+
+            app.isOrdersLoading = true;
             elements.ordersContainer.innerHTML = '<div class="spinner"></div>';
 
-            db.collection('orders').where('userId', '==', app.user.uid).orderBy('createdAt', 'desc').get()
-                .then(querySnapshot => {
+            // Use a real-time listener for better performance
+            const unsubscribe = db.collection('orders')
+                .where('userId', '==', app.user.uid)
+                .orderBy('createdAt', 'desc')
+                .onSnapshot(snapshot => {
                     app.orders = [];
-                    querySnapshot.forEach(doc => {
+                    snapshot.forEach(doc => {
                         app.orders.push({
                             id: doc.id,
                             ...doc.data()
                         });
                     });
                     renderOrders();
-                })
-                .catch(error => {
+                    app.isOrdersLoading = false;
+                    unsubscribe(); // Unsubscribe after first load
+                }, error => {
                     console.error('Error loading orders:', error);
-                    showToast('Failed to load orders', 'error');
+                    showToast('Failed to load orders. Please refresh the page.', 'error');
                     elements.ordersContainer.innerHTML = '<p>Failed to load orders. Please try again later.</p>';
+                    app.isOrdersLoading = false;
                 });
         }
 
