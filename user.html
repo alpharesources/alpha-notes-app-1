@@ -446,113 +446,6 @@
             font-size: 0.8rem;
         }
 
-        /* Cart Sidebar */
-        .cart-sidebar {
-            position: fixed;
-            top: 0;
-            right: -400px;
-            width: 100%;
-            max-width: 400px;
-            height: 100%;
-            background: var(--bg-secondary);
-            z-index: 1001;
-            transition: var(--transition);
-            overflow-y: auto;
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .cart-sidebar.active {
-            right: 0;
-        }
-
-        .cart-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-items {
-            padding: 20px;
-        }
-
-        .cart-item {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .cart-item-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .cart-item-details {
-            flex: 1;
-        }
-
-        .cart-item-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .cart-item-price {
-            color: var(--accent-primary);
-            font-weight: 700;
-        }
-
-        .cart-item-quantity {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .quantity-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: var(--text-primary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .cart-footer {
-            padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        .coupon-section {
-            margin-bottom: 20px;
-        }
-
-        .coupon-input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            margin-bottom: 10px;
-        }
-
         /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
@@ -733,8 +626,8 @@
 
         .order-footer {
             display: flex;
--between;
-            align-items            justify-content: space: center;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .order-total {
@@ -966,6 +859,56 @@
             justify-content: center;
         }
 
+        /* Order Detail Modal */
+        .order-detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .order-detail-modal.active {
+            display: flex;
+        }
+
+        .order-detail-content {
+            glass;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            border-radius: var(--border-radius);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .order-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-detail-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .order-detail-close {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero h1 {
@@ -974,11 +917,6 @@
 
             .products-grid {
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-
-            .cart-sidebar {
-                width: 100%;
-                max-width: 100%;
             }
 
             .header-content {
@@ -1051,10 +989,6 @@
                     <button class="icon-btn" id="wishlistBtn" aria-label="Wishlist">
                         <i class="far fa-heart"></i>
                         <span class="badge" id="wishlistCount">0</span>
-                    </button>
-                    <button class="icon-btn" id="cartBtn" aria-label="Cart">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="badge" id="cartCount">0</span>
                     </button>
                     <button class="icon-btn" id="profileBtn" aria-label="Profile">
                         <i class="far fa-user"></i>
@@ -1277,7 +1211,7 @@
                         <div id="modalStock"></div>
                     </div>
                     <div class="product-actions">
-                        <button class="btn btn-primary" id="modalAddToCart">Add to Cart</button>
+                        <button class="btn btn-primary" id="modalBuyNow">Buy Now</button>
                         <button class="btn btn-secondary" id="modalAddToWishlist">
                             <i class="far fa-heart"></i> Wishlist
                         </button>
@@ -1287,27 +1221,18 @@
         </div>
     </div>
 
-    <!-- Cart Sidebar -->
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h3>Shopping Cart</h3>
-            <button class="icon-btn" id="cartClose">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <!-- Cart items will be loaded here -->
-        </div>
-        <div class="cart-footer">
-            <div class="coupon-section">
-                <input type="text" class="coupon-input" id="couponInput" placeholder="Enter coupon code">
-                <button class="btn btn-secondary" id="applyCoupon">Apply</button>
+    <!-- Order Detail Modal -->
+    <div class="order-detail-modal" id="orderDetailModal">
+        <div class="order-detail-content">
+            <div class="order-detail-header">
+                <h2 class="order-detail-title">Order Details</h2>
+                <button class="order-detail-close" id="orderDetailClose">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotal">₹0</span>
+            <div id="orderDetailBody">
+                <!-- Order details will be loaded here -->
             </div>
-            <button class="btn btn-primary" id="checkoutBtn">Checkout</button>
         </div>
     </div>
 
@@ -1340,10 +1265,6 @@
         <a href="#" class="nav-item" data-page="wishlist">
             <i class="far fa-heart"></i>
             <span>Wishlist</span>
-        </a>
-        <a href="#" class="nav-item" data-page="orders">
-            <i class="fas fa-receipt"></i>
-            <span>Orders</span>
         </a>
         <a href="#" class="nav-item" data-page="profile">
             <i class="far fa-user"></i>
@@ -1385,7 +1306,6 @@
         const app = {
             user: null,
             products: [],
-            cart: [],
             wishlist: [],
             orders: [],
             currentCategory: 'all',
@@ -1402,11 +1322,6 @@
             productsGrid: document.getElementById('productsGrid'),
             wishlistGrid: document.getElementById('wishlistGrid'),
             ordersContainer: document.getElementById('ordersContainer'),
-            cartSidebar: document.getElementById('cartSidebar'),
-            cartItems: document.getElementById('cartItems'),
-            cartTotal: document.getElementById('cartTotal'),
-            cartCount: document.getElementById('cartCount'),
-            wishlistCount: document.getElementById('wishlistCount'),
             productModal: document.getElementById('productModal'),
             modalMainImage: document.getElementById('modalMainImage'),
             modalGallery: document.getElementById('modalGallery'),
@@ -1426,9 +1341,10 @@
             profileContent: document.getElementById('profileContent'),
             loginForm: document.getElementById('loginForm'),
             registerForm: document.getElementById('registerForm'),
-            couponInput: document.getElementById('couponInput'),
             fileLinkPopup: document.getElementById('fileLinkPopup'),
-            fileLinkInput: document.getElementById('fileLinkInput')
+            fileLinkInput: document.getElementById('fileLinkInput'),
+            orderDetailModal: document.getElementById('orderDetailModal'),
+            orderDetailBody: document.getElementById('orderDetailBody')
         };
 
         // Initialize App
@@ -1442,7 +1358,6 @@
 
             // Load initial data
             loadProducts();
-            loadCartFromStorage();
             loadWishlistFromStorage();
 
             // Setup event listeners
@@ -1458,15 +1373,6 @@
                     const page = item.dataset.page;
                     navigateToPage(page);
                 });
-            });
-
-            // Cart
-            document.getElementById('cartBtn').addEventListener('click', () => {
-                elements.cartSidebar.classList.add('active');
-            });
-
-            document.getElementById('cartClose').addEventListener('click', () => {
-                elements.cartSidebar.classList.remove('active');
             });
 
             // Product Modal
@@ -1520,16 +1426,10 @@
                 }
             });
 
-            // Checkout
-            document.getElementById('checkoutBtn').addEventListener('click', handleCheckout);
-
-            // Coupon
-            document.getElementById('applyCoupon').addEventListener('click', applyCoupon);
-
             // Modal Actions
-            document.getElementById('modalAddToCart').addEventListener('click', () => {
+            document.getElementById('modalBuyNow').addEventListener('click', () => {
                 if (app.selectedProduct) {
-                    addToCart(app.selectedProduct);
+                    buyNow(app.selectedProduct);
                     elements.productModal.classList.remove('active');
                 }
             });
@@ -1538,6 +1438,11 @@
                 if (app.selectedProduct) {
                     toggleWishlist(app.selectedProduct.id);
                 }
+            });
+
+            // Order Detail Modal
+            document.getElementById('orderDetailClose').addEventListener('click', () => {
+                elements.orderDetailModal.classList.remove('active');
             });
 
             // File Link Popup Actions
@@ -1778,8 +1683,8 @@
                         </div>
                         <div class="product-actions">
                             <button class="btn btn-primary" onclick="viewProduct('${product.id}')">View</button>
-                            <button class="btn btn-secondary" onclick="quickAddToCart('${product.id}')">
-                                <i class="fas fa-cart-plus"></i>
+                            <button class="btn btn-secondary" onclick="quickBuyNow('${product.id}')">
+                                <i class="fas fa-bolt"></i>
                             </button>
                         </div>
                     </div>
@@ -1840,159 +1745,36 @@
             element.classList.add('active');
         }
 
-        function quickAddToCart(productId) {
+        function quickBuyNow(productId) {
             const product = app.products.find(p => p.id === productId);
             if (product) {
-                addToCart(product);
+                buyNow(product);
             }
         }
 
-        // Cart Functions
-        function addToCart(product) {
-            const existingItem = app.cart.find(item => item.id === product.id);
-            
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                app.cart.push({
-                    id: product.id,
-                    title: product.title,
-                    price: product.priceINR,
-                    image: product.thumbnails && product.thumbnails.length > 0 ? product.thumbnails[0] : 'https://picsum.photos/seed/product/80/80.jpg',
-                    quantity: 1,
-                    downloadLink: product.downloadLink || null
-                });
-            }
-
-            saveCartToStorage();
-            renderCart();
-            updateCartCount();
-            showToast(`${product.title} added to cart`, 'success');
-        }
-
-        function removeFromCart(productId) {
-            app.cart = app.cart.filter(item => item.id !== productId);
-            saveCartToStorage();
-            renderCart();
-            updateCartCount();
-        }
-
-        function updateQuantity(productId, change) {
-            const item = app.cart.find(item => item.id === productId);
-            if (item) {
-                item.quantity += change;
-                if (item.quantity <= 0) {
-                    removeFromCart(productId);
-                } else {
-                    saveCartToStorage();
-                    renderCart();
-                    updateCartCount();
-                }
-            }
-        }
-
-        function renderCart() {
-            if (app.cart.length === 0) {
-                elements.cartItems.innerHTML = '<p>Your cart is empty</p>';
-                elements.cartTotal.textContent = '₹0';
-                return;
-            }
-
-            elements.cartItems.innerHTML = app.cart.map(item => `
-                <div class="cart-item">
-                    <img src="${item.image}" alt="${item.title}" class="cart-item-image">
-                    <div class="cart-item-details">
-                        <h4 class="cart-item-title">${item.title}</h4>
-                        <div class="cart-item-price">₹${item.price}</div>
-                        <div class="cart-item-quantity">
-                            <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <span>${item.quantity}</span>
-                            <button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <button class="icon-btn" onclick="removeFromCart('${item.id}')">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            `).join('');
-
-            const total = app.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            elements.cartTotal.textContent = `₹${total}`;
-        }
-
-        function updateCartCount() {
-            const count = app.cart.reduce((sum, item) => sum + item.quantity, 0);
-            elements.cartCount.textContent = count;
-        }
-
-        function saveCartToStorage() {
-            localStorage.setItem('alphnotes_cart', JSON.stringify(app.cart));
-            
-            // Sync with Firestore if user is logged in
-            if (app.user) {
-                db.collection('users').doc(app.user.uid).update({
-                    cart: app.cart
-                }).catch(error => {
-                    console.error('Error syncing cart to Firestore:', error);
-                });
-            }
-        }
-
-        function loadCartFromStorage() {
-            const savedCart = localStorage.getItem('alphnotes_cart');
-            if (savedCart) {
-                app.cart = JSON.parse(savedCart);
-                renderCart();
-                updateCartCount();
-            }
-        }
-
-        // Checkout
-        function handleCheckout() {
-            if (app.cart.length === 0) {
-                showToast('Your cart is empty', 'error');
-                return;
-            }
-
+        // Buy Now Function
+        function buyNow(product) {
             if (!app.user) {
-                showToast('Please login to checkout', 'error');
+                showToast('Please login to purchase', 'error');
                 navigateToPage('login');
                 return;
             }
 
-            const total = app.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
-            // If total is 0, process order without payment
-            if (total === 0) {
-                createOrder('free');
-                return;
-            }
-
-            // Create order with pending status
-            createOrder('pending');
-        }
-
-        function createOrder(status) {
-            const total = app.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const orderId = `ORD${Date.now()}`;
             
             const orderData = {
                 orderId: orderId,
                 userId: app.user.uid,
                 userEmail: app.user.email,
-                products: app.cart.map(item => ({
-                    id: item.id,
-                    title: item.title,
-                    price: item.price,
-                    quantity: item.quantity,
-                    downloadLink: item.downloadLink
-                })),
-                amount: total,
-                status: status,
+                products: [{
+                    id: product.id,
+                    title: product.title,
+                    price: product.priceINR,
+                    quantity: 1,
+                    downloadLink: product.downloadLink
+                }],
+                amount: product.priceINR,
+                status: product.priceINR === 0 ? 'paid' : 'pending',
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
@@ -2001,8 +1783,8 @@
                 .then(docRef => {
                     const orderId = docRef.id;
                     
-                    if (status === 'free') {
-                        // For free orders, mark as paid immediately
+                    if (product.priceINR === 0) {
+                        // For free products, mark as paid immediately
                         return docRef.update({ 
                             status: 'paid', 
                             paidAt: firebase.firestore.FieldValue.serverTimestamp() 
@@ -2016,22 +1798,14 @@
                             };
                             app.orders.unshift(newOrder);
                             
-                            // Clear cart and show success message
-                            app.cart = [];
-                            saveCartToStorage();
-                            renderCart();
-                            updateCartCount();
-                            elements.cartSidebar.classList.remove('active');
-                            
                             // Show file link popup for free products
-                            showFileLinkPopup(orderData.products);
+                            showFileLinkPopup([product]);
                             
                             showToast('Order placed successfully!', 'success');
-                            navigateToPage('orders');
                         });
                     } else {
-                        // For paid orders, initiate payment
-                        return initiatePayment(orderId, total, orderData.orderId);
+                        // For paid products, initiate payment
+                        return initiatePayment(orderId, product.priceINR, orderData.orderId, [product]);
                     }
                 })
                 .catch(error => {
@@ -2040,7 +1814,7 @@
                 });
         }
 
-        function initiatePayment(orderId, amount, orderNumber) {
+        function initiatePayment(orderId, amount, orderNumber, products) {
             // In a real implementation, you would integrate with a payment gateway like Razorpay
             // For this demo, we'll simulate payment success
             
@@ -2078,18 +1852,10 @@
                         app.orders.unshift(updatedOrder);
                     }
                     
-                    // Clear cart
-                    app.cart = [];
-                    saveCartToStorage();
-                    renderCart();
-                    updateCartCount();
-                    elements.cartSidebar.classList.remove('active');
-                    
                     // Show file link popup
-                    showFileLinkPopup(orderData.products);
+                    showFileLinkPopup(products);
                     
                     showToast('Payment successful! Your order is confirmed.', 'success');
-                    navigateToPage('orders');
                 })
                 .catch(error => {
                     console.error('Error updating order:', error);
@@ -2164,10 +1930,9 @@
             elements.ordersContainer.innerHTML = app.orders.map(order => {
                 const date = order.createdAt ? order.createdAt.toDate().toLocaleDateString() : 'Unknown';
                 const statusClass = `status-${order.status}`;
-                const canDownload = order.status === 'paid' || order.status === 'fulfilled';
                 
                 return `
-                    <div class="order-card">
+                    <div class="order-card" onclick="viewOrderDetail('${order.id}')">
                         <div class="order-header">
                             <div class="order-id">Order #${order.orderId}</div>
                             <div class="order-status ${statusClass}">${order.status}</div>
@@ -2187,16 +1952,61 @@
                             <div class="order-total">Total: ₹${order.amount}</div>
                             <div>
                                 <span>Date: ${date}</span>
-                                ${canDownload ? `
-                                    <button class="btn btn-primary" onclick="downloadOrderItems('${order.id}')">
-                                        <i class="fas fa-download"></i> Download
-                                    </button>
-                                ` : ''}
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+
+        function viewOrderDetail(orderId) {
+            const order = app.orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            const date = order.createdAt ? order.createdAt.toDate().toLocaleDateString() : 'Unknown';
+            const canDownload = order.status === 'paid' || order.status === 'fulfilled';
+            
+            elements.orderDetailBody.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <div>
+                            <h3>Order #${order.orderId}</h3>
+                            <p style="color: var(--text-secondary);">Date: ${date}</p>
+                        </div>
+                        <div class="order-status status-${order.status}">${order.status}</div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px;">Products</h4>
+                    ${order.products.map(item => `
+                        <div style="display: flex; gap: 15px; margin-bottom: 15px; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                            <img src="https://picsum.photos/seed/product/60/60.jpg" alt="${item.title}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                            <div style="flex: 1;">
+                                <h5>${item.title}</h5>
+                                <p style="color: var(--text-secondary);">₹${item.price} × ${item.quantity}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div>
+                        <h4>Total: ₹${order.amount}</h4>
+                    </div>
+                    ${canDownload ? `
+                        <button class="btn btn-primary" onclick="downloadOrderItems('${order.id}')">
+                            <i class="fas fa-download"></i> Buy Now
+                        </button>
+                    ` : `
+                        <button class="btn btn-secondary" disabled>
+                            <i class="fas fa-clock"></i> ${order.status}
+                        </button>
+                    `}
+                </div>
+            `;
+            
+            elements.orderDetailModal.classList.add('active');
         }
 
         function downloadOrderItems(orderId) {
@@ -2215,6 +2025,7 @@
                 // Show the first download link in popup
                 elements.fileLinkInput.value = downloadLinks[0];
                 elements.fileLinkPopup.classList.add('active');
+                elements.orderDetailModal.classList.remove('active');
             } else {
                 // Simulate download if no link available
                 showToast('Download starting...', 'info');
@@ -2388,24 +2199,6 @@
         function handleSearch() {
             app.searchQuery = elements.searchInput.value.trim();
             filterAndRenderProducts();
-        }
-
-        // Coupon
-        function applyCoupon() {
-            const couponCode = elements.couponInput.value.trim();
-            if (!couponCode) {
-                showToast('Please enter a coupon code', 'error');
-                return;
-            }
-
-            // In a real implementation, you would validate the coupon against Firestore
-            // For this demo, we'll simulate a coupon
-            if (couponCode === 'DEMO10') {
-                showToast('Coupon applied! 10% discount', 'success');
-                // Apply discount logic here
-            } else {
-                showToast('Invalid coupon code', 'error');
-            }
         }
 
         // Utility Functions
