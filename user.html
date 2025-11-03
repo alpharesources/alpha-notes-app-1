@@ -858,6 +858,54 @@
             opacity: 0.5;
         }
 
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1f3a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5000;
+        }
+
+        .login-container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 40px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .login-title {
+            color: var(--text-dim);
+            font-size: 1rem;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .header-content {
@@ -891,6 +939,32 @@
     </style>
 </head>
 <body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    Alpha Notes
+                </div>
+                <div class="login-title">Login to access premium study materials</div>
+            </div>
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="container">
@@ -912,8 +986,8 @@
                         <i class="fas fa-shopping-cart"></i>
                         <span class="badge" id="cartCount">0</span>
                     </div>
-                    <div class="icon-btn" id="profileBtn">
-                        <i class="far fa-user"></i>
+                    <div class="icon-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
                     </div>
                 </div>
             </div>
@@ -972,25 +1046,6 @@
             <h1 class="section-title">My Wishlist</h1>
             <div class="products-grid" id="wishlistGrid">
                 <!-- Wishlist items will be loaded here -->
-            </div>
-        </div>
-
-        <!-- Profile Page -->
-        <div id="profilePage" class="page">
-            <h1 class="section-title">My Profile</h1>
-            <div class="glass-panel">
-                <div class="profile-info">
-                    <div class="profile-avatar">
-                        <i class="fas fa-user-circle"></i>
-                    </div>
-                    <div class="profile-details">
-                        <h2 id="userName">Guest User</h2>
-                        <p id="userEmail">Not logged in</p>
-                    </div>
-                </div>
-                <div class="profile-actions">
-                    <button class="btn btn-primary" id="loginBtn">Login / Register</button>
-                </div>
             </div>
         </div>
     </main>
@@ -1069,32 +1124,6 @@
         </div>
     </div>
 
-    <!-- Auth Modal -->
-    <div class="modal" id="authModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="authTitle">Login / Register</h2>
-                <button class="close-btn" id="closeAuthBtn">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="auth-form">
-                    <div class="form-group">
-                        <label for="authEmail">Email</label>
-                        <input type="email" id="authEmail" placeholder="Enter your email">
-                    </div>
-                    <div class="form-group">
-                        <label for="authPassword">Password</label>
-                        <input type="password" id="authPassword" placeholder="Enter your password">
-                    </div>
-                    <button class="btn btn-primary" id="authSubmitBtn">Login</button>
-                    <p>Don't have an account? <a href="#" id="toggleAuthMode">Register</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Order Detail Modal -->
     <div class="modal" id="orderModal">
         <div class="modal-content">
@@ -1163,10 +1192,6 @@
             <i class="fas fa-heart"></i>
             <span>Wishlist</span>
         </div>
-        <div class="nav-item" data-page="profilePage">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
-        </div>
     </nav>
 
     <!-- Toast Notification -->
@@ -1174,7 +1199,6 @@
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
     <script>
@@ -1190,11 +1214,10 @@
 };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
         const db = firebase.firestore();
 
         // App State
-        let currentUser = null;
+        let isLoggedIn = false;
         let cart = [];
         let wishlist = [];
         let products = [];
@@ -1205,11 +1228,17 @@
 
         // DOM Elements
         const elements = {
+            // Login
+            loginScreen: document.getElementById('loginScreen'),
+            loginForm: document.getElementById('loginForm'),
+            loginUsername: document.getElementById('loginUsername'),
+            loginPassword: document.getElementById('loginPassword'),
+            logoutBtn: document.getElementById('logoutBtn'),
+            
             // Pages
             homePage: document.getElementById('homePage'),
             ordersPage: document.getElementById('ordersPage'),
             wishlistPage: document.getElementById('wishlistPage'),
-            profilePage: document.getElementById('profilePage'),
             
             // Navigation
             navItems: document.querySelectorAll('.nav-item'),
@@ -1219,7 +1248,6 @@
             searchBtn: document.getElementById('searchBtn'),
             wishlistBtn: document.getElementById('wishlistBtn'),
             cartBtn: document.getElementById('cartBtn'),
-            profileBtn: document.getElementById('profileBtn'),
             
             // Cart
             cartSidebar: document.getElementById('cartSidebar'),
@@ -1237,24 +1265,10 @@
             // Modals
             productModal: document.getElementById('productModal'),
             closeModalBtn: document.getElementById('closeModalBtn'),
-            authModal: document.getElementById('authModal'),
-            closeAuthBtn: document.getElementById('closeAuthBtn'),
             orderModal: document.getElementById('orderModal'),
             closeOrderModalBtn: document.getElementById('closeOrderModalBtn'),
             paymentModal: document.getElementById('paymentModal'),
             closePaymentModalBtn: document.getElementById('closePaymentModalBtn'),
-            
-            // Auth
-            authTitle: document.getElementById('authTitle'),
-            authEmail: document.getElementById('authEmail'),
-            authPassword: document.getElementById('authPassword'),
-            authSubmitBtn: document.getElementById('authSubmitBtn'),
-            toggleAuthMode: document.getElementById('toggleAuthMode'),
-            
-            // Profile
-            loginBtn: document.getElementById('loginBtn'),
-            userName: document.getElementById('userName'),
-            userEmail: document.getElementById('userEmail'),
             
             // Orders
             ordersList: document.getElementById('ordersList'),
@@ -1269,30 +1283,21 @@
 
         // Initialize App
         function initApp() {
-            // Load products from Firestore
-            loadProducts();
-            
-            // Load cart from localStorage
-            loadCart();
-            
-            // Load wishlist from localStorage
-            loadWishlist();
-            
             // Set up event listeners
             setupEventListeners();
             
-            // Check authentication state
-            auth.onAuthStateChanged(user => {
-                currentUser = user;
-                updateProfileUI();
-                if (user) {
-                    loadUserOrders();
-                }
-            });
+            // Check if user is logged in
+            checkLoginStatus();
         }
 
         // Setup Event Listeners
         function setupEventListeners() {
+            // Login form
+            elements.loginForm.addEventListener('submit', handleLogin);
+            
+            // Logout button
+            elements.logoutBtn.addEventListener('click', logout);
+            
             // Navigation
             elements.navItems.forEach(item => {
                 item.addEventListener('click', () => {
@@ -1340,28 +1345,63 @@
                 document.querySelector('[data-page="wishlistPage"]').classList.add('active');
             });
             
-            // Profile
-            elements.profileBtn.addEventListener('click', () => {
-                switchPage('profilePage');
-                elements.navItems.forEach(navItem => navItem.classList.remove('active'));
-                document.querySelector('[data-page="profilePage"]').classList.add('active');
-            });
-            
-            elements.loginBtn.addEventListener('click', openAuthModal);
-            
             // Modals
             elements.closeModalBtn.addEventListener('click', closeProductModal);
-            elements.closeAuthBtn.addEventListener('click', closeAuthModal);
             elements.closeOrderModalBtn.addEventListener('click', closeOrderModal);
             elements.closePaymentModalBtn.addEventListener('click', closePaymentModal);
-            
-            // Auth
-            elements.authSubmitBtn.addEventListener('click', authenticate);
-            elements.toggleAuthMode.addEventListener('click', toggleAuthMode);
             
             // Payment
             elements.cancelPaymentBtn.addEventListener('click', closePaymentModal);
             elements.confirmPaymentBtn.addEventListener('click', confirmPayment);
+        }
+
+        // Handle Login
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = elements.loginUsername.value.trim();
+            const password = elements.loginPassword.value.trim();
+            
+            // Check hardcoded credentials
+            if (username === 'zyro' && password === '6969') {
+                isLoggedIn = true;
+                localStorage.setItem('isLoggedIn', 'true');
+                elements.loginScreen.style.display = 'none';
+                showToast('Login successful!', 'success');
+                
+                // Load data after login
+                loadProducts();
+                loadCart();
+                loadWishlist();
+                loadUserOrders();
+            } else {
+                showToast('Invalid username or password', 'error');
+            }
+        }
+
+        // Logout
+        function logout() {
+            isLoggedIn = false;
+            localStorage.removeItem('isLoggedIn');
+            elements.loginScreen.style.display = 'flex';
+            showToast('Logged out successfully', 'success');
+        }
+
+        // Check Login Status
+        function checkLoginStatus() {
+            const savedLoginStatus = localStorage.getItem('isLoggedIn');
+            if (savedLoginStatus === 'true') {
+                isLoggedIn = true;
+                elements.loginScreen.style.display = 'none';
+                
+                // Load data
+                loadProducts();
+                loadCart();
+                loadWishlist();
+                loadUserOrders();
+            } else {
+                elements.loginScreen.style.display = 'flex';
+            }
         }
 
         // Page Navigation
@@ -1411,7 +1451,8 @@
                     image: 'https://freeimage.host/i/physics-mechanics',
                     rating: 4.5,
                     stock: 50,
-                    visible: true
+                    visible: true,
+                    pdf: 'https://example.com/physics-mechanics.pdf'
                 },
                 {
                     id: '2',
@@ -1423,7 +1464,8 @@
                     image: 'https://freeimage.host/i/chemistry-organic',
                     rating: 4.7,
                     stock: 30,
-                    visible: true
+                    visible: true,
+                    pdf: 'https://example.com/chemistry-organic.pdf'
                 },
                 {
                     id: '3',
@@ -1435,7 +1477,8 @@
                     image: 'https://freeimage.host/i/biology-cell',
                     rating: 4.3,
                     stock: 40,
-                    visible: true
+                    visible: true,
+                    pdf: 'https://example.com/biology-cell.pdf'
                 },
                 {
                     id: '4',
@@ -1447,7 +1490,8 @@
                     image: 'https://freeimage.host/i/physics-em',
                     rating: 4.6,
                     stock: 25,
-                    visible: true
+                    visible: true,
+                    pdf: 'https://example.com/physics-em.pdf'
                 },
                 {
                     id: '5',
@@ -1459,7 +1503,8 @@
                     image: 'https://freeimage.host/i/chemistry-physical',
                     rating: 4.4,
                     stock: 35,
-                    visible: true
+                    visible: true,
+                    pdf: 'https://example.com/chemistry-physical.pdf'
                 },
                 {
                     id: '6',
@@ -1471,7 +1516,8 @@
                     image: 'https://freeimage.host/i/biology-genetics',
                     rating: 4.8,
                     stock: 20,
-                    visible: true
+                    visible: true,
+                    pdf: 'https://example.com/biology-genetics.pdf'
                 }
             ];
             
@@ -1565,12 +1611,6 @@
             
             if (product.price === 0) {
                 // Free product - give direct access
-                if (!currentUser) {
-                    showToast('Please login to access free products', 'warning');
-                    openAuthModal();
-                    return;
-                }
-                
                 createOrder([product], 0, 'free');
             } else {
                 // Paid product - proceed to checkout
@@ -1706,15 +1746,6 @@
         // Save Cart
         function saveCart() {
             localStorage.setItem('cart', JSON.stringify(cart));
-            
-            // Sync with Firestore if logged in
-            if (currentUser) {
-                db.collection('users').doc(currentUser.uid).update({
-                    cart: cart
-                }).catch(error => {
-                    console.error('Error syncing cart:', error);
-                });
-            }
         }
 
         // Load Cart
@@ -1730,12 +1761,6 @@
         function checkout() {
             if (cart.length === 0) {
                 showToast('Your cart is empty', 'warning');
-                return;
-            }
-            
-            if (!currentUser) {
-                showToast('Please login to checkout', 'warning');
-                openAuthModal();
                 return;
             }
             
@@ -1757,13 +1782,13 @@
                 
                 const orderData = {
                     orderId: orderId,
-                    userId: currentUser.uid,
-                    userEmail: currentUser.email,
+                    userId: 'zyro', // Hardcoded user ID
                     products: items.map(item => ({
                         id: item.id,
                         title: item.title,
                         price: item.price,
-                        quantity: item.quantity
+                        quantity: item.quantity,
+                        pdf: item.pdf
                     })),
                     amount: amount,
                     status: paymentMethod === 'free' ? 'paid' : 'pending',
@@ -1809,7 +1834,9 @@
                 // In a real app, this would generate a download link or unlock content
                 // For demo purposes, we'll just show a message
                 setTimeout(() => {
-                    showToast(`Download link for ${item.title}: https://example.com/download/${item.id}`, 'success');
+                    if (item.pdf) {
+                        showToast(`Download link for ${item.title}: ${item.pdf}`, 'success');
+                    }
                 }, 1000);
             });
         }
@@ -1905,11 +1932,9 @@
 
         // Load User Orders
         async function loadUserOrders() {
-            if (!currentUser) return;
-            
             try {
                 const snapshot = await db.collection('orders')
-                    .where('userId', '==', currentUser.uid)
+                    .where('userId', '==', 'zyro') // Hardcoded user ID
                     .orderBy('createdAt', 'desc')
                     .get();
                 
@@ -2016,6 +2041,7 @@
                                 <div class="order-item-info">
                                     <h4>${product.title}</h4>
                                     <p>${product.price === 0 ? 'FREE' : '₹' + product.price} × ${product.quantity}</p>
+                                    ${product.pdf ? `<p><strong>PDF:</strong> <a href="${product.pdf}" target="_blank">View PDF</a></p>` : ''}
                                 </div>
                             </div>
                         `).join('')}
@@ -2030,8 +2056,11 @@
                     <button class="btn btn-primary" onclick="downloadOrder('${order.id}')">
                         <i class="fas fa-download"></i> Download
                     </button>
-                    <button class="btn btn-secondary" onclick="shareOrder('${order.id}')">
-                        <i class="fas fa-share"></i> Share
+                    <button class="btn btn-secondary" onclick="copyOrderLink('${order.id}')">
+                        <i class="fas fa-copy"></i> Copy Link
+                    </button>
+                    <button class="btn btn-secondary" onclick="openOrderLink('${order.id}')">
+                        <i class="fas fa-external-link-alt"></i> Open Link
                     </button>
                 ` : order.status === 'pending' ? `
                     <button class="btn btn-primary" onclick="payForOrder('${order.id}')">
@@ -2060,38 +2089,43 @@
             // In a real app, this would generate a download link or unlock content
             // For demo purposes, we'll just show a message
             order.products.forEach(product => {
-                showToast(`Download link for ${product.title}: https://example.com/download/${product.id}`, 'success');
+                if (product.pdf) {
+                    showToast(`Download link for ${product.title}: ${product.pdf}`, 'success');
+                    // Open the PDF in a new tab
+                    window.open(product.pdf, '_blank');
+                }
             });
         }
 
-        // Share Order
-        function shareOrder(orderId) {
+        // Copy Order Link
+        function copyOrderLink(orderId) {
             const order = orders.find(o => o.id === orderId);
             if (!order) return;
             
-            // In a real app, this would generate a shareable link
-            // For demo purposes, we'll copy to clipboard
-            const shareText = `Check out my order #${order.orderId} from Alpha Notes!`;
+            // Create a shareable link
+            const orderLink = `${window.location.origin}/order/${order.orderId}`;
             
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Alpha Notes Order',
-                    text: shareText,
-                    url: window.location.href
-                }).catch(error => {
-                    console.error('Error sharing:', error);
+            // Copy to clipboard
+            navigator.clipboard.writeText(orderLink)
+                .then(() => {
+                    showToast('Order link copied to clipboard', 'success');
+                })
+                .catch(error => {
+                    console.error('Error copying to clipboard:', error);
+                    showToast('Failed to copy order link', 'error');
                 });
-            } else {
-                // Fallback: copy to clipboard
-                navigator.clipboard.writeText(shareText)
-                    .then(() => {
-                        showToast('Order details copied to clipboard', 'success');
-                    })
-                    .catch(error => {
-                        console.error('Error copying to clipboard:', error);
-                        showToast('Failed to copy order details', 'error');
-                    });
-            }
+        }
+
+        // Open Order Link
+        function openOrderLink(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            // Create a shareable link
+            const orderLink = `${window.location.origin}/order/${order.orderId}`;
+            
+            // Open in a new tab
+            window.open(orderLink, '_blank');
         }
 
         // Pay for Order
@@ -2129,15 +2163,6 @@
 
         function saveWishlist() {
             localStorage.setItem('wishlist', JSON.stringify(wishlist));
-            
-            // Sync with Firestore if logged in
-            if (currentUser) {
-                db.collection('users').doc(currentUser.uid).update({
-                    wishlist: wishlist
-                }).catch(error => {
-                    console.error('Error syncing wishlist:', error);
-                });
-            }
         }
 
         function loadWishlist() {
@@ -2196,102 +2221,6 @@
                 
                 elements.wishlistGrid.appendChild(productCard);
             });
-        }
-
-        // Auth Functions
-        function openAuthModal() {
-            elements.authModal.classList.add('open');
-        }
-
-        function closeAuthModal() {
-            elements.authModal.classList.remove('open');
-        }
-
-        function toggleAuthMode(e) {
-            e.preventDefault();
-            const isLogin = elements.authTitle.textContent === 'Login';
-            
-            if (isLogin) {
-                elements.authTitle.textContent = 'Register';
-                elements.authSubmitBtn.textContent = 'Register';
-                elements.toggleAuthMode.textContent = 'Login';
-            } else {
-                elements.authTitle.textContent = 'Login';
-                elements.authSubmitBtn.textContent = 'Login';
-                elements.toggleAuthMode.textContent = 'Register';
-            }
-        }
-
-        function authenticate() {
-            const email = elements.authEmail.value.trim();
-            const password = elements.authPassword.value.trim();
-            
-            if (!email || !password) {
-                showToast('Please enter email and password', 'warning');
-                return;
-            }
-            
-            const isLogin = elements.authTitle.textContent === 'Login';
-            
-            if (isLogin) {
-                // Login
-                auth.signInWithEmailAndPassword(email, password)
-                    .then(userCredential => {
-                        showToast('Login successful', 'success');
-                        closeAuthModal();
-                    })
-                    .catch(error => {
-                        console.error('Login error:', error);
-                        showToast('Login failed: ' + error.message, 'error');
-                    });
-            } else {
-                // Register
-                auth.createUserWithEmailAndPassword(email, password)
-                    .then(userCredential => {
-                        showToast('Registration successful', 'success');
-                        closeAuthModal();
-                        
-                        // Create user document in Firestore
-                        db.collection('users').doc(userCredential.user.uid).set({
-                            email: email,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            isAdmin: false
-                        }).catch(error => {
-                            console.error('Error creating user document:', error);
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Registration error:', error);
-                        showToast('Registration failed: ' + error.message, 'error');
-                    });
-            }
-        }
-
-        // Update Profile UI
-        function updateProfileUI() {
-            if (currentUser) {
-                elements.userName.textContent = currentUser.displayName || currentUser.email;
-                elements.userEmail.textContent = currentUser.email;
-                elements.loginBtn.textContent = 'Logout';
-                elements.loginBtn.onclick = logout;
-            } else {
-                elements.userName.textContent = 'Guest User';
-                elements.userEmail.textContent = 'Not logged in';
-                elements.loginBtn.textContent = 'Login / Register';
-                elements.loginBtn.onclick = openAuthModal;
-            }
-        }
-
-        // Logout
-        function logout() {
-            auth.signOut()
-                .then(() => {
-                    showToast('Logged out successfully', 'success');
-                })
-                .catch(error => {
-                    console.error('Logout error:', error);
-                    showToast('Logout failed', 'error');
-                });
         }
 
         // Product Modal Functions
