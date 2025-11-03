@@ -388,7 +388,7 @@
             background: var(--dark);
             border-radius: 12px;
             width: 90%;
-            max-width: 700px;
+            max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
             transform: scale(0.9);
@@ -509,112 +509,6 @@
             transform: translateX(26px);
         }
 
-        /* Image Upload Area */
-        .image-upload-area {
-            border: 2px dashed var(--glass-border);
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            background: var(--glass);
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .image-upload-area:hover {
-            border-color: var(--primary);
-            background: rgba(99, 102, 241, 0.05);
-        }
-
-        .image-upload-area.dragover {
-            border-color: var(--primary);
-            background: rgba(99, 102, 241, 0.1);
-        }
-
-        .upload-icon {
-            font-size: 3rem;
-            color: var(--text-dim);
-            margin-bottom: 15px;
-        }
-
-        .upload-text {
-            color: var(--text-dim);
-            margin-bottom: 10px;
-        }
-
-        .upload-hint {
-            font-size: 0.8rem;
-            color: var(--text-dim);
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        .image-preview {
-            margin-top: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .preview-item {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            border-radius: 8px;
-            overflow: hidden;
-            background: var(--dark-lighter);
-        }
-
-        .preview-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .preview-remove {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: var(--danger);
-            color: white;
-            border: none;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-        }
-
-        .upload-progress {
-            margin-top: 15px;
-            display: none;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: var(--dark-lighter);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            transition: width 0.3s;
-        }
-
-        .progress-text {
-            margin-top: 5px;
-            font-size: 0.8rem;
-            color: var(--text-dim);
-        }
-
         /* Toast Notification */
         .toast {
             position: fixed;
@@ -703,11 +597,6 @@
 
             .stats-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .modal-content {
-                width: 95%;
-                margin: 10px;
             }
         }
     </style>
@@ -1051,24 +940,9 @@
                         <textarea id="productDescription" class="form-control" rows="4" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Product Images</label>
-                        <div class="image-upload-area" id="imageUploadArea">
-                            <div class="upload-icon">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                            </div>
-                            <div class="upload-text">Click to upload or drag and drop</div>
-                            <div class="upload-hint">PNG, JPG up to 50MB</div>
-                            <input type="file" id="productImages" class="file-input" accept="image/png,image/jpeg,image/jpg" multiple>
-                        </div>
-                        <div class="upload-progress" id="uploadProgress">
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="progressFill"></div>
-                            </div>
-                            <div class="progress-text" id="progressText">Uploading...</div>
-                        </div>
-                        <div class="image-preview" id="imagePreview">
-                            <!-- Image previews will be shown here -->
-                        </div>
+                        <label for="productImage">Image URL</label>
+                        <input type="text" id="productImage" class="form-control" placeholder="https://freeimage.host/your-image.jpg">
+                        <small>Upload images to <a href="https://freeimage.host" target="_blank">FreeImage.host</a> and paste the direct link here.</small>
                     </div>
                     <div class="form-group">
                         <label for="productTags">Tags (comma separated)</label>
@@ -1117,7 +991,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 
     <script>
         // Firebase Configuration
@@ -1135,7 +1008,6 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
         // App State
         let currentUser = null;
@@ -1145,7 +1017,6 @@
         let currentProduct = null;
         let currentOrder = null;
         let currentPage = 'dashboard';
-        let uploadedImages = [];
 
         // DOM Elements
         const elements = {
@@ -1197,14 +1068,6 @@
             productModalTitle: document.getElementById('productModalTitle'),
             cancelProductBtn: document.getElementById('cancelProductBtn'),
             saveProductBtn: document.getElementById('saveProductBtn'),
-            
-            // Image Upload
-            imageUploadArea: document.getElementById('imageUploadArea'),
-            productImages: document.getElementById('productImages'),
-            uploadProgress: document.getElementById('uploadProgress'),
-            progressFill: document.getElementById('progressFill'),
-            progressText: document.getElementById('progressText'),
-            imagePreview: document.getElementById('imagePreview'),
             
             orderModal: document.getElementById('orderModal'),
             closeOrderModalBtn: document.getElementById('closeOrderModalBtn'),
@@ -1345,133 +1208,6 @@
             
             // Save settings
             elements.saveSettingsBtn.addEventListener('click', saveSettings);
-            
-            // Image upload
-            setupImageUpload();
-        }
-
-        // Setup Image Upload
-        function setupImageUpload() {
-            const uploadArea = elements.imageUploadArea;
-            const fileInput = elements.productImages;
-            
-            // Click to upload
-            uploadArea.addEventListener('click', () => {
-                fileInput.click();
-            });
-            
-            // File input change
-            fileInput.addEventListener('change', (e) => {
-                handleFiles(e.target.files);
-            });
-            
-            // Drag and drop
-            uploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadArea.classList.add('dragover');
-            });
-            
-            uploadArea.addEventListener('dragleave', () => {
-                uploadArea.classList.remove('dragover');
-            });
-            
-            uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadArea.classList.remove('dragover');
-                handleFiles(e.dataTransfer.files);
-            });
-        }
-
-        // Handle File Upload
-        function handleFiles(files) {
-            Array.from(files).forEach(file => {
-                // Validate file type
-                if (!file.type.match('image.*')) {
-                    showToast('Please upload only image files (PNG, JPG)', 'error');
-                    return;
-                }
-                
-                // Validate file size (50MB)
-                const maxSize = 50 * 1024 * 1024; // 50MB in bytes
-                if (file.size > maxSize) {
-                    showToast('File size must be less than 50MB', 'error');
-                    return;
-                }
-                
-                // Show preview
-                showImagePreview(file);
-                
-                // Upload to Firebase Storage
-                uploadImage(file);
-            });
-        }
-
-        // Show Image Preview
-        function showImagePreview(file) {
-            const reader = new FileReader();
-            
-            reader.onload = (e) => {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'preview-item';
-                previewItem.innerHTML = `
-                    <img src="${e.target.result}" alt="Preview">
-                    <button class="preview-remove" onclick="removeImage(this)">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                
-                elements.imagePreview.appendChild(previewItem);
-            };
-            
-            reader.readAsDataURL(file);
-        }
-
-        // Remove Image
-        function removeImage(button) {
-            const previewItem = button.parentElement;
-            const imageUrl = previewItem.querySelector('img').src;
-            
-            // Remove from uploaded images array
-            uploadedImages = uploadedImages.filter(img => img !== imageUrl);
-            
-            // Remove from preview
-            previewItem.remove();
-        }
-
-        // Upload Image to Firebase Storage
-        async function uploadImage(file) {
-            const fileName = `${Date.now()}_${file.name}`;
-            const storageRef = storage.ref(`products/${fileName}`);
-            const uploadTask = storageRef.put(file);
-            
-            // Show progress
-            elements.uploadProgress.style.display = 'block';
-            
-            uploadTask.on('state_changed', 
-                (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    elements.progressFill.style.width = progress + '%';
-                    elements.progressText.textContent = `Uploading... ${Math.round(progress)}%`;
-                },
-                (error) => {
-                    console.error('Upload error:', error);
-                    showToast('Failed to upload image', 'error');
-                    elements.uploadProgress.style.display = 'none';
-                },
-                async () => {
-                    // Upload complete
-                    const downloadUrl = await uploadTask.snapshot.ref.getDownloadURL();
-                    uploadedImages.push(downloadUrl);
-                    
-                    // Hide progress
-                    setTimeout(() => {
-                        elements.uploadProgress.style.display = 'none';
-                        elements.progressFill.style.width = '0%';
-                    }, 1000);
-                    
-                    showToast('Image uploaded successfully', 'success');
-                }
-            );
         }
 
         // Page Navigation
@@ -1591,14 +1327,9 @@
             
             products.forEach(product => {
                 const row = document.createElement('tr');
-                
-                const imageUrl = product.images && product.images.length > 0 ? 
-                    product.images[0] : 
-                    'https://picsum.photos/seed/' + product.id + '/50/50.jpg';
-                
                 row.innerHTML = `
                     <td>
-                        <img src="${imageUrl}" alt="${product.title}" width="50" height="50" style="border-radius: 8px; object-fit: cover;">
+                        <img src="${product.image || 'https://picsum.photos/seed/' + product.id + '/50/50.jpg'}" alt="${product.title}" width="50" height="50">
                     </td>
                     <td>${product.title}</td>
                     <td>${product.category}</td>
@@ -1654,14 +1385,9 @@
             
             filteredProducts.forEach(product => {
                 const row = document.createElement('tr');
-                
-                const imageUrl = product.images && product.images.length > 0 ? 
-                    product.images[0] : 
-                    'https://picsum.photos/seed/' + product.id + '/50/50.jpg';
-                
                 row.innerHTML = `
                     <td>
-                        <img src="${imageUrl}" alt="${product.title}" width="50" height="50" style="border-radius: 8px; object-fit: cover;">
+                        <img src="${product.image || 'https://picsum.photos/seed/' + product.id + '/50/50.jpg'}" alt="${product.title}" width="50" height="50">
                     </td>
                     <td>${product.title}</td>
                     <td>${product.category}</td>
@@ -1692,10 +1418,6 @@
         function openProductModal(productId = null) {
             currentProduct = productId ? products.find(p => p.id === productId) : null;
             
-            // Reset uploaded images
-            uploadedImages = [];
-            elements.imagePreview.innerHTML = '';
-            
             if (currentProduct) {
                 // Edit mode
                 elements.productModalTitle.textContent = 'Edit Product';
@@ -1704,25 +1426,10 @@
                 document.getElementById('productPrice').value = currentProduct.price;
                 document.getElementById('productStock').value = currentProduct.stock || 0;
                 document.getElementById('productDescription').value = currentProduct.description;
+                document.getElementById('productImage').value = currentProduct.image || '';
                 document.getElementById('productTags').value = currentProduct.tags ? currentProduct.tags.join(', ') : '';
                 document.getElementById('productPdf').value = currentProduct.pdf || '';
                 document.getElementById('productVisible').checked = currentProduct.visible !== false;
-                
-                // Show existing images
-                if (currentProduct.images && currentProduct.images.length > 0) {
-                    currentProduct.images.forEach(imageUrl => {
-                        uploadedImages.push(imageUrl);
-                        const previewItem = document.createElement('div');
-                        previewItem.className = 'preview-item';
-                        previewItem.innerHTML = `
-                            <img src="${imageUrl}" alt="Preview">
-                            <button class="preview-remove" onclick="removeImage(this)">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        `;
-                        elements.imagePreview.appendChild(previewItem);
-                    });
-                }
             } else {
                 // Add mode
                 elements.productModalTitle.textContent = 'Add Product';
@@ -1735,9 +1442,7 @@
         // Close Product Modal
         function closeProductModal() {
             elements.productModal.classList.remove('open');
-            uploadedImages = [];
-            elements.imagePreview.innerHTML = '';
-            elements.productForm.reset();
+            currentProduct = null;
         }
 
         // Save Product
@@ -1747,6 +1452,7 @@
             const price = parseFloat(document.getElementById('productPrice').value);
             const stock = parseInt(document.getElementById('productStock').value);
             const description = document.getElementById('productDescription').value.trim();
+            const image = document.getElementById('productImage').value.trim();
             const tags = document.getElementById('productTags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
             const pdf = document.getElementById('productPdf').value.trim();
             const visible = document.getElementById('productVisible').checked;
@@ -1763,7 +1469,7 @@
                     price,
                     stock,
                     description,
-                    images: uploadedImages,
+                    image,
                     tags,
                     pdf,
                     visible,
