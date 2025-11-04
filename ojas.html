@@ -561,6 +561,111 @@
             gap: 20px;
         }
 
+        /* Image URL Input */
+        .image-url-container {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+
+        .image-url-input {
+            flex: 1;
+        }
+
+        .image-url-helper {
+            padding: 0 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .image-url-helper:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .image-preview {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .preview-item {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--dark-lighter);
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-remove {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .preview-remove:hover {
+            transform: scale(1.1);
+        }
+
+        .add-image-btn {
+            width: 150px;
+            height: 150px;
+            border-radius: 12px;
+            border: 2px dashed var(--glass-border);
+            background: var(--glass);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-image-btn:hover {
+            border-color: var(--primary);
+            background: rgba(124, 58, 237, 0.05);
+        }
+
+        .add-image-btn i {
+            font-size: 2rem;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+        }
+
+        .add-image-btn span {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
         /* Switch */
         .switch {
             position: relative;
@@ -605,118 +710,6 @@
 
         input:checked + .slider:before {
             transform: translateX(26px);
-        }
-
-        /* Image Upload Area */
-        .image-upload-area {
-            border: 2px dashed var(--glass-border);
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            background: var(--glass);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .image-upload-area:hover {
-            border-color: var(--primary);
-            background: rgba(124, 58, 237, 0.05);
-        }
-
-        .image-upload-area.dragover {
-            border-color: var(--primary);
-            background: rgba(124, 58, 237, 0.1);
-        }
-
-        .upload-icon {
-            font-size: 3.5rem;
-            color: var(--text-dim);
-            margin-bottom: 20px;
-        }
-
-        .upload-text {
-            color: var(--text-dim);
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-
-        .upload-hint {
-            font-size: 0.9rem;
-            color: var(--text-dim);
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        .image-preview {
-            margin-top: 25px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .preview-item {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: var(--dark-lighter);
-        }
-
-        .preview-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .preview-remove {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: var(--danger);
-            color: white;
-            border: none;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .preview-remove:hover {
-            transform: scale(1.1);
-        }
-
-        .upload-progress {
-            margin-top: 20px;
-            display: none;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: var(--dark-lighter);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            transition: width 0.3s;
-        }
-
-        .progress-text {
-            margin-top: 8px;
-            font-size: 0.9rem;
-            color: var(--text-dim);
         }
 
         /* Toast Notification */
@@ -1172,22 +1165,19 @@
                     </div>
                     <div class="form-group">
                         <label>Product Images</label>
-                        <div class="image-upload-area" id="imageUploadArea">
-                            <div class="upload-icon">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                            </div>
-                            <div class="upload-text">Click to upload or drag and drop</div>
-                            <div class="upload-hint">PNG, JPG up to 50MB</div>
-                            <input type="file" id="productImages" class="file-input" accept="image/png,image/jpeg,image/jpg" multiple>
-                        </div>
-                        <div class="upload-progress" id="uploadProgress">
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="progressFill"></div>
-                            </div>
-                            <div class="progress-text" id="progressText">Uploading...</div>
-                        </div>
                         <div class="image-preview" id="imagePreview">
                             <!-- Image previews will be shown here -->
+                        </div>
+                        <div class="add-image-btn" id="addImageBtn">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Image</span>
+                        </div>
+                        <div class="image-url-container" id="imageUrlContainer" style="display: none; margin-top: 15px;">
+                            <input type="text" id="imageUrlInput" class="form-control image-url-input" placeholder="Paste image URL from FreeImage.host">
+                            <button type="button" class="image-url-helper" id="openFreeImageBtn">
+                                <i class="fas fa-external-link-alt"></i>
+                                FreeImage.host
+                            </button>
                         </div>
                     </div>
                     <div class="form-group">
@@ -1237,25 +1227,23 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
 
     <script>
         // Firebase Configuration
         const firebaseConfig = {
-  apiKey: "AIzaSyCwll-R6_LNPhCt6bFitr2zu_o2XHM5EqU",
-  authDomain: "alpha-notes-app-550d3.firebaseapp.com",
-  databaseURL: "https://alpha-notes-app-550d3-default-rtdb.firebaseio.com",
-  projectId: "alpha-notes-app-550d3",
-  storageBucket: "alpha-notes-app-550d3.firebasestorage.app",
-  messagingSenderId: "600503443065",
-  appId: "1:600503443065:web:e4c4b225745d5ef6b33ea8"
-};
+            apiKey: "AIzaSyCwll-R6_LNPhCt6bFitr2zu_o2XHM5EqU",
+            authDomain: "alpha-notes-app-550d3.firebaseapp.com",
+            databaseURL: "https://alpha-notes-app-550d3-default-rtdb.firebaseio.com",
+            projectId: "alpha-notes-app-550d3",
+            storageBucket: "alpha-notes-app-550d3.firebasestorage.app",
+            messagingSenderId: "600503443065",
+            appId: "1:600503443065:web:e4c4b225745d5ef6b33ea8"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
         // App State
         let currentUser = null;
@@ -1324,12 +1312,11 @@
             cancelProductBtn: document.getElementById('cancelProductBtn'),
             saveProductBtn: document.getElementById('saveProductBtn'),
             
-            // Image Upload
-            imageUploadArea: document.getElementById('imageUploadArea'),
-            productImages: document.getElementById('productImages'),
-            uploadProgress: document.getElementById('uploadProgress'),
-            progressFill: document.getElementById('progressFill'),
-            progressText: document.getElementById('progressText'),
+            // Image URL Input
+            addImageBtn: document.getElementById('addImageBtn'),
+            imageUrlContainer: document.getElementById('imageUrlContainer'),
+            imageUrlInput: document.getElementById('imageUrlInput'),
+            openFreeImageBtn: document.getElementById('openFreeImageBtn'),
             imagePreview: document.getElementById('imagePreview'),
             
             orderModal: document.getElementById('orderModal'),
@@ -1504,6 +1491,16 @@
             elements.cancelProductBtn.addEventListener('click', closeProductModal);
             elements.saveProductBtn.addEventListener('click', saveProduct);
             
+            // Image URL input
+            elements.addImageBtn.addEventListener('click', () => {
+                elements.imageUrlContainer.style.display = 'flex';
+                elements.addImageBtn.style.display = 'none';
+            });
+            
+            elements.openFreeImageBtn.addEventListener('click', () => {
+                window.open('https://freeimage.host', '_blank');
+            });
+            
             // Order modal
             elements.closeOrderModalBtn.addEventListener('click', closeOrderModal);
             
@@ -1513,133 +1510,6 @@
             
             // Save settings
             elements.saveSettingsBtn.addEventListener('click', saveSettings);
-            
-            // Image upload
-            setupImageUpload();
-        }
-
-        // Setup Image Upload
-        function setupImageUpload() {
-            const uploadArea = elements.imageUploadArea;
-            const fileInput = elements.productImages;
-            
-            // Click to upload
-            uploadArea.addEventListener('click', () => {
-                fileInput.click();
-            });
-            
-            // File input change
-            fileInput.addEventListener('change', (e) => {
-                handleFiles(e.target.files);
-            });
-            
-            // Drag and drop
-            uploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadArea.classList.add('dragover');
-            });
-            
-            uploadArea.addEventListener('dragleave', () => {
-                uploadArea.classList.remove('dragover');
-            });
-            
-            uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadArea.classList.remove('dragover');
-                handleFiles(e.dataTransfer.files);
-            });
-        }
-
-        // Handle File Upload
-        function handleFiles(files) {
-            Array.from(files).forEach(file => {
-                // Validate file type
-                if (!file.type.match('image.*')) {
-                    showToast('Please upload only image files (PNG, JPG)', 'error');
-                    return;
-                }
-                
-                // Validate file size (50MB)
-                const maxSize = 50 * 1024 * 1024; // 50MB in bytes
-                if (file.size > maxSize) {
-                    showToast('File size must be less than 50MB', 'error');
-                    return;
-                }
-                
-                // Show preview
-                showImagePreview(file);
-                
-                // Upload to Firebase Storage
-                uploadImage(file);
-            });
-        }
-
-        // Show Image Preview
-        function showImagePreview(file) {
-            const reader = new FileReader();
-            
-            reader.onload = (e) => {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'preview-item';
-                previewItem.innerHTML = `
-                    <img src="${e.target.result}" alt="Preview">
-                    <button class="preview-remove" onclick="removeImage(this)">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                
-                elements.imagePreview.appendChild(previewItem);
-            };
-            
-            reader.readAsDataURL(file);
-        }
-
-        // Remove Image
-        function removeImage(button) {
-            const previewItem = button.parentElement;
-            const imageUrl = previewItem.querySelector('img').src;
-            
-            // Remove from uploaded images array
-            uploadedImages = uploadedImages.filter(img => img !== imageUrl);
-            
-            // Remove from preview
-            previewItem.remove();
-        }
-
-        // Upload Image to Firebase Storage
-        async function uploadImage(file) {
-            const fileName = `${Date.now()}_${file.name}`;
-            const storageRef = storage.ref(`products/${fileName}`);
-            const uploadTask = storageRef.put(file);
-            
-            // Show progress
-            elements.uploadProgress.style.display = 'block';
-            
-            uploadTask.on('state_changed', 
-                (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    elements.progressFill.style.width = progress + '%';
-                    elements.progressText.textContent = `Uploading... ${Math.round(progress)}%`;
-                },
-                (error) => {
-                    console.error('Upload error:', error);
-                    showToast('Failed to upload image', 'error');
-                    elements.uploadProgress.style.display = 'none';
-                },
-                async () => {
-                    // Upload complete
-                    const downloadUrl = await uploadTask.snapshot.ref.getDownloadURL();
-                    uploadedImages.push(downloadUrl);
-                    
-                    // Hide progress
-                    setTimeout(() => {
-                        elements.uploadProgress.style.display = 'none';
-                        elements.progressFill.style.width = '0%';
-                    }, 1000);
-                    
-                    showToast('Image uploaded successfully', 'success');
-                }
-            );
         }
 
         // Page Navigation
@@ -1850,6 +1720,8 @@
             // Reset uploaded images
             uploadedImages = [];
             elements.imagePreview.innerHTML = '';
+            elements.imageUrlContainer.style.display = 'none';
+            elements.addImageBtn.style.display = 'block';
             
             if (currentProduct) {
                 // Edit mode
@@ -1893,6 +1765,48 @@
             uploadedImages = [];
             elements.imagePreview.innerHTML = '';
             elements.productForm.reset();
+        }
+
+        // Add Image URL
+        function addImageUrl() {
+            const imageUrl = elements.imageUrlInput.value.trim();
+            
+            if (!imageUrl) {
+                showToast('Please enter an image URL', 'warning');
+                return;
+            }
+            
+            // Add to uploaded images array
+            uploadedImages.push(imageUrl);
+            
+            // Show preview
+            const previewItem = document.createElement('div');
+            previewItem.className = 'preview-item';
+            previewItem.innerHTML = `
+                <img src="${imageUrl}" alt="Preview">
+                <button class="preview-remove" onclick="removeImage(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            elements.imagePreview.appendChild(previewItem);
+            
+            // Clear input
+            elements.imageUrlInput.value = '';
+            
+            showToast('Image added successfully', 'success');
+        }
+
+        // Remove Image
+        function removeImage(button) {
+            const previewItem = button.parentElement;
+            const imageUrl = previewItem.querySelector('img').src;
+            
+            // Remove from uploaded images array
+            uploadedImages = uploadedImages.filter(img => img !== imageUrl);
+            
+            // Remove from preview
+            previewItem.remove();
         }
 
         // Save Product
