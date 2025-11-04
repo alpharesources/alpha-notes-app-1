@@ -7,20 +7,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
             --secondary: #a855f7;
             --accent: #06b6d4;
-            --dark: #0f172a;
-            --dark-light: #1e293b;
-            --dark-lighter: #334155;
-            --text: #e2e8f0;
-            --text-dim: #94a3b8;
+            --dark: #0a0a0a;
+            --dark-light: #1a1a1a;
+            --dark-lighter: #2a2a2a;
+            --text: #ffffff;
+            --text-dim: #a0a0a0;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
 
         * {
@@ -30,29 +30,31 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--dark) 0%, #1a1f3a 100%);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark);
             color: var(--text);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 20px;
         }
 
         /* Header Styles */
         header {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
+            background: var(--dark-light);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
             position: sticky;
             top: 0;
             z-index: 100;
             padding: 15px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .header-content {
@@ -62,54 +64,62 @@
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 700;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .search-bar {
             flex: 1;
-            max-width: 500px;
-            margin: 0 20px;
+            max-width: 600px;
+            margin: 0 30px;
             position: relative;
         }
 
         .search-bar input {
             width: 100%;
-            padding: 10px 40px 10px 15px;
-            border-radius: 30px;
+            padding: 14px 50px 14px 20px;
+            border-radius: 50px;
             background: var(--glass);
             border: 1px solid var(--glass-border);
             color: var(--text);
+            font-size: 1rem;
             outline: none;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
 
         .search-bar input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+            background: rgba(124, 58, 237, 0.05);
         }
 
         .search-bar button {
             position: absolute;
-            right: 5px;
+            right: 8px;
             top: 50%;
             transform: translateY(-50%);
             background: var(--primary);
             border: none;
             color: white;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-50%) scale(1.05);
         }
 
         .header-actions {
@@ -122,20 +132,21 @@
             background: var(--glass);
             border: 1px solid var(--glass-border);
             color: var(--text);
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             position: relative;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
 
         .icon-btn:hover {
             background: var(--primary);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
         }
 
         .badge {
@@ -145,19 +156,20 @@
             background: var(--danger);
             color: white;
             font-size: 0.7rem;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 600;
         }
 
         /* Category Pills */
         .category-pills {
             display: flex;
-            gap: 10px;
-            padding: 15px 0;
+            gap: 12px;
+            padding: 20px 0;
             overflow-x: auto;
             scrollbar-width: none;
         }
@@ -167,40 +179,88 @@
         }
 
         .pill {
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 50px;
             background: var(--glass);
             border: 1px solid var(--glass-border);
             color: var(--text);
             white-space: nowrap;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            font-weight: 500;
         }
 
         .pill.active {
             background: var(--primary);
             border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .pill:hover:not(.active) {
+            background: var(--dark-lighter);
+            transform: translateY(-2px);
         }
 
         /* Hero Section */
         .hero {
-            padding: 30px 0;
+            padding: 40px 0;
             text-align: center;
         }
 
         .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
+            font-size: 3rem;
+            margin-bottom: 20px;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 700;
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-dim);
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Search Results */
+        .search-results {
+            display: none;
+            background: var(--dark-light);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .search-results-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .clear-search {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .clear-search:hover {
+            color: var(--text);
         }
 
         /* Product Grid */
@@ -212,54 +272,62 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .section-title {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 600;
         }
 
         .filter-sort {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .filter-btn, .sort-btn {
-            padding: 8px 15px;
+            padding: 10px 18px;
             background: var(--glass);
             border: 1px solid var(--glass-border);
             color: var(--text);
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover, .sort-btn:hover {
+            background: var(--dark-lighter);
+            transform: translateY(-2px);
         }
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
         }
 
         .product-card {
-            background: var(--glass);
+            background: var(--dark-light);
             border: 1px solid var(--glass-border);
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
         }
 
         .product-image {
-            height: 180px;
+            height: 200px;
             background: var(--dark-lighter);
             position: relative;
             overflow: hidden;
@@ -269,18 +337,24 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
         }
 
         .product-badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 5px 10px;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
             background: var(--danger);
             color: white;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: bold;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .product-badge.new {
@@ -302,43 +376,45 @@
 
         .product-badges {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px;
+            right: 15px;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
         }
 
         .product-info {
-            padding: 15px;
+            padding: 20px;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
         .product-title {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            color: var(--text);
         }
 
         .product-description {
             color: var(--text-dim);
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
             flex: 1;
+            line-height: 1.5;
         }
 
         .product-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .product-price {
-            font-size: 1.2rem;
-            font-weight: bold;
+            font-size: 1.4rem;
+            font-weight: 700;
             color: var(--primary);
         }
 
@@ -351,21 +427,22 @@
 
         .product-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .btn {
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 12px 18px;
+            border-radius: 12px;
             border: none;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 8px;
+            font-size: 0.95rem;
         }
 
         .btn-primary {
@@ -375,6 +452,8 @@
 
         .btn-primary:hover {
             background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
         }
 
         .btn-secondary {
@@ -385,6 +464,7 @@
 
         .btn-secondary:hover {
             background: var(--dark-lighter);
+            transform: translateY(-2px);
         }
 
         /* Bottom Navigation */
@@ -393,22 +473,23 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: var(--dark);
+            background: var(--dark-light);
             border-top: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 15px 0;
             z-index: 100;
+            backdrop-filter: blur(20px);
         }
 
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             color: var(--text-dim);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
 
         .nav-item.active {
@@ -416,17 +497,18 @@
         }
 
         .nav-item i {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
         .nav-item span {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
 
         /* Page Content */
         .page {
             display: none;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
         }
 
         .page.active {
@@ -440,14 +522,14 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
 
         .modal.open {
@@ -456,14 +538,16 @@
         }
 
         .modal-content {
-            background: var(--dark);
-            border-radius: 12px;
+            background: var(--dark-light);
+            border-radius: 20px;
             width: 90%;
-            max-width: 500px;
+            max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
             transform: scale(0.9);
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
         .modal.open .modal-content {
@@ -471,7 +555,7 @@
         }
 
         .modal-header {
-            padding: 20px;
+            padding: 25px;
             border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
@@ -479,23 +563,28 @@
         }
 
         .modal-body {
-            padding: 20px;
+            padding: 25px;
         }
 
         .modal-footer {
-            padding: 20px;
+            padding: 25px;
             border-top: 1px solid var(--glass-border);
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
+            gap: 15px;
         }
 
         .close-btn {
             background: none;
             border: none;
-            color: var(--text);
+            color: var(--text-dim);
             font-size: 1.5rem;
             cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--text);
         }
 
         /* Access Modal */
@@ -504,34 +593,37 @@
         }
 
         .access-icon {
-            font-size: 4rem;
+            font-size: 4.5rem;
             color: var(--success);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .access-title {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
 
         .access-message {
             color: var(--text-dim);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            line-height: 1.6;
         }
 
         .access-link {
             background: var(--glass);
             border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 25px;
             word-break: break-all;
             color: var(--primary);
+            font-family: monospace;
         }
 
         .access-actions {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             justify-content: center;
         }
 
@@ -539,31 +631,38 @@
         .orders-list {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
         }
 
         .order-card {
-            background: var(--glass);
+            background: var(--dark-light);
             border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
 
         .order-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .order-id {
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 1.1rem;
         }
 
         .order-status {
-            padding: 5px 10px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 50px;
             font-size: 0.8rem;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         .status-pending {
@@ -582,20 +681,20 @@
         }
 
         .order-items {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .order-item {
             display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 15px;
+            margin-bottom: 15px;
         }
 
         .order-item-image {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background: var(--dark-lighter);
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
         }
 
@@ -616,29 +715,31 @@
         }
 
         .order-total {
-            font-weight: bold;
-            font-size: 1.1rem;
+            font-weight: 600;
+            font-size: 1.2rem;
         }
 
         .order-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         /* Toast Notification */
         .toast {
             position: fixed;
-            bottom: 100px;
+            bottom: 120px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: var(--dark-light);
             color: var(--text);
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            padding: 18px 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             z-index: 3000;
             opacity: 0;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            font-weight: 500;
         }
 
         .toast.show {
@@ -648,6 +749,7 @@
 
         .toast.success {
             background: var(--success);
+            color: white;
         }
 
         .toast.warning {
@@ -663,7 +765,7 @@
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 20px auto;
+            margin: 30px auto;
         }
 
         @keyframes spin {
@@ -675,13 +777,13 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
+            padding: 60px 20px;
             color: var(--text-dim);
         }
 
         .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 4rem;
+            margin-bottom: 20px;
             opacity: 0.5;
         }
 
@@ -700,67 +802,72 @@
         }
 
         .login-container {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
+            background: var(--dark-light);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 40px;
+            border-radius: 20px;
+            padding: 50px;
             width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
         .login-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         .login-logo {
-            font-size: 2rem;
-            font-weight: bold;
+            font-size: 2.5rem;
+            font-weight: 700;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 12px;
+            margin-bottom: 15px;
         }
 
         .login-title {
             color: var(--text-dim);
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         /* Auth Form */
         .auth-form {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
         }
 
         .form-group label {
             font-weight: 600;
+            color: var(--text);
         }
 
         .form-group input {
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 15px 20px;
+            border-radius: 12px;
             background: var(--glass);
             border: 1px solid var(--glass-border);
             color: var(--text);
             outline: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
 
         .form-group input:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+            background: rgba(124, 58, 237, 0.05);
         }
 
         /* Responsive */
@@ -772,20 +879,24 @@
             .search-bar {
                 order: 3;
                 max-width: 100%;
-                margin: 15px 0 0;
+                margin: 20px 0 0;
             }
 
             .hero h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
 
             .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
 
             .modal-content {
                 width: 95%;
                 margin: 10px;
+            }
+
+            .login-container {
+                padding: 30px;
             }
         }
     </style>
@@ -841,6 +952,19 @@
             </div>
         </div>
     </header>
+
+    <!-- Search Results -->
+    <div class="container">
+        <div class="search-results" id="searchResults">
+            <div class="search-results-header">
+                <h3 class="search-results-title">Search Results</h3>
+                <button class="clear-search" id="clearSearchBtn">Clear</button>
+            </div>
+            <div class="products-grid" id="searchResultsGrid">
+                <!-- Search results will be loaded here -->
+            </div>
+        </div>
+    </div>
 
     <!-- Category Pills -->
     <div class="container">
@@ -1016,6 +1140,7 @@
   messagingSenderId: "600503443065",
   appId: "1:600503443065:web:e4c4b225745d5ef6b33ea8"
 };
+
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
@@ -1050,6 +1175,11 @@
             searchInput: document.getElementById('searchInput'),
             searchBtn: document.getElementById('searchBtn'),
             wishlistBtn: document.getElementById('wishlistBtn'),
+            
+            // Search Results
+            searchResults: document.getElementById('searchResults'),
+            clearSearchBtn: document.getElementById('clearSearchBtn'),
+            searchResultsGrid: document.getElementById('searchResultsGrid'),
             
             // Product Grid
             productsGrid: document.getElementById('productsGrid'),
@@ -1123,12 +1253,15 @@
             });
             
             // Search
-            elements.searchBtn.addEventListener('click', searchProducts);
+            elements.searchBtn.addEventListener('click', performSearch);
             elements.searchInput.addEventListener('keyup', (e) => {
                 if (e.key === 'Enter') {
-                    searchProducts();
+                    performSearch();
                 }
             });
+            
+            // Clear search
+            elements.clearSearchBtn.addEventListener('click', clearSearch);
             
             // Wishlist
             elements.wishlistBtn.addEventListener('click', () => {
@@ -1209,6 +1342,45 @@
             document.getElementById(pageId).classList.add('active');
         }
 
+        // Perform Search
+        function performSearch() {
+            const searchTerm = elements.searchInput.value.trim();
+            
+            if (!searchTerm) {
+                clearSearch();
+                return;
+            }
+            
+            // Filter products based on search term
+            const filteredProducts = products.filter(product => 
+                product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (product.tags && product.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
+            );
+            
+            // Show search results
+            showSearchResults(filteredProducts, searchTerm);
+        }
+
+        // Show Search Results
+        function showSearchResults(filteredProducts, searchTerm) {
+            elements.searchResults.classList.add('active');
+            
+            // Update search results title
+            document.querySelector('.search-results-title').textContent = 
+                `Search Results for "${searchTerm}" (${filteredProducts.length} found)`;
+            
+            // Render search results
+            renderProducts(elements.searchResultsGrid, filteredProducts);
+        }
+
+        // Clear Search
+        function clearSearch() {
+            elements.searchInput.value = '';
+            elements.searchResults.classList.remove('active');
+            filterProducts();
+        }
+
         // Load Products from Firestore
         async function loadProducts() {
             try {
@@ -1222,10 +1394,10 @@
                     });
                 });
                 
-                renderProducts(products);
+                renderProducts(elements.productsGrid, products);
             } catch (error) {
                 console.error('Error loading products:', error);
-                // Removed error popup - just load sample products
+                // Load sample products for demo
                 loadSampleProducts();
             }
         }
@@ -1243,7 +1415,7 @@
                     price: 299,
                     category: 'physics',
                     tags: ['mechanics', 'formulas', 'diagrams'],
-                    image: 'https://freeimage.host/i/physics-mechanics',
+                    image: 'https://picsum.photos/seed/physics-mechanics/300/200.jpg',
                     rating: 4.5,
                     stock: 50,
                     visible: true,
@@ -1257,7 +1429,7 @@
                     price: 0,
                     category: 'chemistry',
                     tags: ['organic', 'reactions', 'mechanisms'],
-                    image: 'https://freeimage.host/i/chemistry-organic',
+                    image: 'https://picsum.photos/seed/chemistry-organic/300/200.jpg',
                     rating: 4.7,
                     stock: 30,
                     visible: true,
@@ -1271,7 +1443,7 @@
                     price: 199,
                     category: 'biology',
                     tags: ['cell', 'structure', 'diagrams'],
-                    image: 'https://freeimage.host/i/biology-cell',
+                    image: 'https://picsum.photos/seed/biology-cell/300/200.jpg',
                     rating: 4.3,
                     stock: 40,
                     visible: true,
@@ -1285,7 +1457,7 @@
                     price: 349,
                     category: 'physics',
                     tags: ['electromagnetism', 'laws', 'applications'],
-                    image: 'https://freeimage.host/i/physics-em',
+                    image: 'https://picsum.photos/seed/physics-em/300/200.jpg',
                     rating: 4.6,
                     stock: 25,
                     visible: true,
@@ -1299,7 +1471,7 @@
                     price: 0,
                     category: 'chemistry',
                     tags: ['thermodynamics', 'kinetics', 'equilibrium'],
-                    image: 'https://freeimage.host/i/chemistry-physical',
+                    image: 'https://picsum.photos/seed/chemistry-physical/300/200.jpg',
                     rating: 4.4,
                     stock: 35,
                     visible: true,
@@ -1313,7 +1485,7 @@
                     price: 249,
                     category: 'biology',
                     tags: ['genetics', 'DNA', 'RNA'],
-                    image: 'https://freeimage.host/i/biology-genetics',
+                    image: 'https://picsum.photos/seed/biology-genetics/300/200.jpg',
                     rating: 4.8,
                     stock: 20,
                     visible: true,
@@ -1322,7 +1494,7 @@
                 }
             ];
             
-            renderProducts(products);
+            renderProducts(elements.productsGrid, products);
         }
 
         // Check if product is new (added within last hour)
@@ -1337,11 +1509,11 @@
         }
 
         // Render Products
-        function renderProducts(productsToRender) {
-            elements.productsGrid.innerHTML = '';
+        function renderProducts(container, productsToRender) {
+            container.innerHTML = '';
             
             if (productsToRender.length === 0) {
-                elements.productsGrid.innerHTML = `
+                container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-box-open"></i>
                         <p>No products found</p>
@@ -1392,7 +1564,7 @@
                     </div>
                 `;
                 
-                elements.productsGrid.appendChild(productCard);
+                container.appendChild(productCard);
             });
         }
 
@@ -1406,25 +1578,7 @@
                 );
             }
             
-            renderProducts(filteredProducts);
-        }
-
-        // Search Products
-        function searchProducts() {
-            const searchTerm = elements.searchInput.value.toLowerCase().trim();
-            
-            if (!searchTerm) {
-                filterProducts();
-                return;
-            }
-            
-            const filteredProducts = products.filter(product => 
-                product.title.toLowerCase().includes(searchTerm) ||
-                product.description.toLowerCase().includes(searchTerm) ||
-                (product.tags && product.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
-            );
-            
-            renderProducts(filteredProducts);
+            renderProducts(elements.productsGrid, filteredProducts);
         }
 
         // Get Free Access
@@ -1586,7 +1740,6 @@
                         })
                         .catch(error => {
                             console.error('Error updating order:', error);
-                            // Removed error popup
                         });
                 }, 3000);
             }
@@ -1625,7 +1778,6 @@
                 return orderId;
             } catch (error) {
                 console.error('Error creating order:', error);
-                // Removed error popup
                 return null;
             }
         }
@@ -1661,7 +1813,6 @@
                 renderOrders();
             } catch (error) {
                 console.error('Error loading orders:', error);
-                // Removed error popup
             }
         }
 
