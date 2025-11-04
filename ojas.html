@@ -7,20 +7,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #7c3aed;
-            --primary-dark: #6d28d9;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
             --secondary: #a855f7;
             --accent: #06b6d4;
-            --dark: #0a0a0a;
-            --dark-light: #1a1a1a;
-            --dark-lighter: #2a2a2a;
-            --text: #ffffff;
-            --text-dim: #a0a0a0;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --dark-lighter: #334155;
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -30,31 +30,29 @@
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1f3a 100%);
             color: var(--text);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
-            line-height: 1.6;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 15px;
         }
 
         /* Header Styles */
         header {
-            background: var(--dark-light);
-            backdrop-filter: blur(20px);
+            background: var(--glass);
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--glass-border);
             position: sticky;
             top: 0;
             z-index: 100;
             padding: 15px 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .header-content {
@@ -64,14 +62,14 @@
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: bold;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .header-actions {
@@ -84,20 +82,19 @@
             background: var(--glass);
             border: 1px solid var(--glass-border);
             color: var(--text);
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .icon-btn:hover {
             background: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
+            transform: translateY(-2px);
         }
 
         /* Admin Layout */
@@ -108,7 +105,7 @@
 
         /* Sidebar */
         .sidebar {
-            width: 260px;
+            width: 250px;
             background: var(--dark-light);
             border-right: 1px solid var(--glass-border);
             padding: 20px 0;
@@ -129,12 +126,11 @@
         .sidebar-link {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 14px 20px;
+            gap: 10px;
+            padding: 12px 20px;
             color: var(--text-dim);
             text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 500;
+            transition: all 0.3s;
         }
 
         .sidebar-link:hover, .sidebar-link.active {
@@ -146,37 +142,36 @@
         /* Main Content */
         .main-content {
             flex: 1;
-            padding: 25px;
+            padding: 20px;
         }
 
         .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .page-title {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 600;
         }
 
         .page-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
 
         .btn {
-            padding: 12px 18px;
-            border-radius: 12px;
+            padding: 10px 15px;
+            border-radius: 8px;
             border: none;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.95rem;
+            gap: 5px;
         }
 
         .btn-primary {
@@ -186,8 +181,6 @@
 
         .btn-primary:hover {
             background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
         }
 
         .btn-secondary {
@@ -198,7 +191,6 @@
 
         .btn-secondary:hover {
             background: var(--dark-lighter);
-            transform: translateY(-2px);
         }
 
         .btn-danger {
@@ -208,72 +200,6 @@
 
         .btn-danger:hover {
             background: #dc2626;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
-        }
-
-        /* Search Bar */
-        .search-container {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 14px 50px 14px 20px;
-            border-radius: 50px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            color: var(--text);
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
-            background: rgba(124, 58, 237, 0.05);
-        }
-
-        .search-btn {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--primary);
-            border: none;
-            color: white;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .search-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-50%) scale(1.05);
-        }
-
-        .clear-search {
-            position: absolute;
-            right: 50px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--text-dim);
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: color 0.3s ease;
-        }
-
-        .clear-search:hover {
-            color: var(--text);
         }
 
         /* Stats Cards */
@@ -285,48 +211,42 @@
         }
 
         .stat-card {
-            background: var(--dark-light);
+            background: var(--glass);
             border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 25px;
+            border-radius: 12px;
+            padding: 20px;
             display: flex;
             align-items: center;
-            gap: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            gap: 15px;
         }
 
         .stat-icon {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
         }
 
         .stat-icon.primary {
-            background: rgba(124, 58, 237, 0.15);
+            background: rgba(99, 102, 241, 0.2);
             color: var(--primary);
         }
 
         .stat-icon.success {
-            background: rgba(16, 185, 129, 0.15);
+            background: rgba(16, 185, 129, 0.2);
             color: var(--success);
         }
 
         .stat-icon.warning {
-            background: rgba(245, 158, 11, 0.15);
+            background: rgba(245, 158, 11, 0.2);
             color: var(--warning);
         }
 
         .stat-icon.danger {
-            background: rgba(239, 68, 68, 0.15);
+            background: rgba(239, 68, 68, 0.2);
             color: var(--danger);
         }
 
@@ -335,26 +255,25 @@
         }
 
         .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 1.8rem;
+            font-weight: bold;
         }
 
         .stat-label {
             color: var(--text-dim);
-            font-size: 0.95rem;
-            margin-top: 5px;
+            font-size: 0.9rem;
         }
 
         /* Data Table */
         .data-table {
-            background: var(--dark-light);
+            background: var(--glass);
             border: 1px solid var(--glass-border);
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
         }
 
         .table-header {
-            padding: 20px 25px;
+            padding: 15px 20px;
             background: var(--dark-lighter);
             display: flex;
             justify-content: space-between;
@@ -363,12 +282,11 @@
 
         .table-title {
             font-weight: 600;
-            font-size: 1.1rem;
         }
 
         .table-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
 
         .search-box {
@@ -377,7 +295,7 @@
 
         .search-box input {
             padding: 8px 35px 8px 15px;
-            border-radius: 50px;
+            border-radius: 20px;
             background: var(--glass);
             border: 1px solid var(--glass-border);
             color: var(--text);
@@ -406,17 +324,14 @@
         }
 
         th {
-            padding: 18px;
+            padding: 15px;
             text-align: left;
             font-weight: 600;
             color: var(--text-dim);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         td {
-            padding: 18px;
+            padding: 15px;
             border-top: 1px solid var(--glass-border);
         }
 
@@ -426,12 +341,12 @@
 
         .table-actions-cell {
             display: flex;
-            gap: 8px;
+            gap: 5px;
         }
 
         .action-btn {
-            width: 36px;
-            height: 36px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background: var(--glass);
             border: 1px solid var(--glass-border);
@@ -440,12 +355,11 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .action-btn:hover {
             background: var(--primary);
-            transform: scale(1.05);
         }
 
         /* Modal Styles */
@@ -455,14 +369,14 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .modal.open {
@@ -471,16 +385,14 @@
         }
 
         .modal-content {
-            background: var(--dark-light);
-            border-radius: 20px;
+            background: var(--dark);
+            border-radius: 12px;
             width: 90%;
-            max-width: 700px;
+            max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
             transform: scale(0.9);
-            transition: transform 0.3s ease;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
         }
 
         .modal.open .modal-content {
@@ -488,7 +400,7 @@
         }
 
         .modal-header {
-            padding: 25px;
+            padding: 20px;
             border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
@@ -496,174 +408,59 @@
         }
 
         .modal-body {
-            padding: 25px;
+            padding: 20px;
         }
 
         .modal-footer {
-            padding: 25px;
+            padding: 20px;
             border-top: 1px solid var(--glass-border);
             display: flex;
             justify-content: flex-end;
-            gap: 15px;
+            gap: 10px;
         }
 
         .close-btn {
             background: none;
             border: none;
-            color: var(--text-dim);
+            color: var(--text);
             font-size: 1.5rem;
             cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .close-btn:hover {
-            color: var(--text);
         }
 
         /* Form Styles */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             font-weight: 600;
-            color: var(--text);
         }
 
         .form-control {
             width: 100%;
-            padding: 14px 18px;
-            border-radius: 12px;
+            padding: 10px 15px;
+            border-radius: 8px;
             background: var(--glass);
             border: 1px solid var(--glass-border);
             color: var(--text);
             outline: none;
-            font-size: 1rem;
-            transition: all 0.3s ease;
         }
 
         .form-control:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
-            background: rgba(124, 58, 237, 0.05);
         }
 
         textarea.form-control {
-            min-height: 120px;
+            min-height: 100px;
             resize: vertical;
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        /* Image URL Input */
-        .image-url-container {
-            display: flex;
-            gap: 10px;
-            align-items: stretch;
-        }
-
-        .image-url-input {
-            flex: 1;
-        }
-
-        .image-url-helper {
-            padding: 0 15px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .image-url-helper:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        .image-preview {
-            margin-top: 15px;
-            display: flex;
-            flex-wrap: wrap;
             gap: 15px;
-        }
-
-        .preview-item {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: var(--dark-lighter);
-        }
-
-        .preview-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .preview-remove {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: var(--danger);
-            color: white;
-            border: none;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .preview-remove:hover {
-            transform: scale(1.1);
-        }
-
-        .add-image-btn {
-            width: 150px;
-            height: 150px;
-            border-radius: 12px;
-            border: 2px dashed var(--glass-border);
-            background: var(--glass);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .add-image-btn:hover {
-            border-color: var(--primary);
-            background: rgba(124, 58, 237, 0.05);
-        }
-
-        .add-image-btn i {
-            font-size: 2rem;
-            color: var(--text-dim);
-            margin-bottom: 10px;
-        }
-
-        .add-image-btn span {
-            color: var(--text-dim);
-            font-size: 0.9rem;
         }
 
         /* Switch */
@@ -715,19 +512,17 @@
         /* Toast Notification */
         .toast {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 20px;
+            right: 20px;
             background: var(--dark-light);
             color: var(--text);
-            padding: 18px 25px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             z-index: 3000;
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.3s ease;
-            border: 1px solid var(--glass-border);
-            font-weight: 500;
+            transition: all 0.3s;
         }
 
         .toast.show {
@@ -737,12 +532,10 @@
 
         .toast.success {
             background: var(--success);
-            color: white;
         }
 
         .toast.error {
             background: var(--danger);
-            color: white;
         }
 
         .toast.warning {
@@ -758,7 +551,7 @@
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 30px auto;
+            margin: 20px auto;
         }
 
         @keyframes spin {
@@ -770,20 +563,20 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
             color: var(--text-dim);
         }
 
         .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 20px;
+            font-size: 3rem;
+            margin-bottom: 15px;
             opacity: 0.5;
         }
 
         /* Responsive */
         @media (max-width: 1024px) {
             .sidebar {
-                width: 220px;
+                width: 200px;
             }
         }
 
@@ -804,11 +597,6 @@
 
             .stats-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .modal-content {
-                width: 95%;
-                margin: 10px;
             }
         }
     </style>
@@ -963,19 +751,15 @@
                     </div>
                 </div>
 
-                <div class="search-container">
-                    <input type="text" class="search-input" id="productSearch" placeholder="Search products by title, description, or tags...">
-                    <button class="search-btn" id="productSearchBtn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <button class="clear-search" id="clearProductSearch" style="display: none;">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-
                 <div class="data-table">
                     <div class="table-header">
                         <h3 class="table-title">All Products</h3>
+                        <div class="table-actions">
+                            <div class="search-box">
+                                <input type="text" id="productSearch" placeholder="Search products...">
+                                <button><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
                     </div>
                     <table>
                         <thead>
@@ -1007,19 +791,15 @@
                     </div>
                 </div>
 
-                <div class="search-container">
-                    <input type="text" class="search-input" id="orderSearch" placeholder="Search orders by ID or customer email...">
-                    <button class="search-btn" id="orderSearchBtn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <button class="clear-search" id="clearOrderSearch" style="display: none;">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-
                 <div class="data-table">
                     <div class="table-header">
                         <h3 class="table-title">All Orders</h3>
+                        <div class="table-actions">
+                            <div class="search-box">
+                                <input type="text" id="orderSearch" placeholder="Search orders...">
+                                <button><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
                     </div>
                     <table>
                         <thead>
@@ -1051,19 +831,15 @@
                     </div>
                 </div>
 
-                <div class="search-container">
-                    <input type="text" class="search-input" id="userSearch" placeholder="Search users by email or name...">
-                    <button class="search-btn" id="userSearchBtn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <button class="clear-search" id="clearUserSearch" style="display: none;">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-
                 <div class="data-table">
                     <div class="table-header">
                         <h3 class="table-title">All Users</h3>
+                        <div class="table-actions">
+                            <div class="search-box">
+                                <input type="text" id="userSearch" placeholder="Search users...">
+                                <button><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
                     </div>
                     <table>
                         <thead>
@@ -1164,21 +940,9 @@
                         <textarea id="productDescription" class="form-control" rows="4" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Product Images</label>
-                        <div class="image-preview" id="imagePreview">
-                            <!-- Image previews will be shown here -->
-                        </div>
-                        <div class="add-image-btn" id="addImageBtn">
-                            <i class="fas fa-plus"></i>
-                            <span>Add Image</span>
-                        </div>
-                        <div class="image-url-container" id="imageUrlContainer" style="display: none; margin-top: 15px;">
-                            <input type="text" id="imageUrlInput" class="form-control image-url-input" placeholder="Paste image URL from FreeImage.host">
-                            <button type="button" class="image-url-helper" id="openFreeImageBtn">
-                                <i class="fas fa-external-link-alt"></i>
-                                FreeImage.host
-                            </button>
-                        </div>
+                        <label for="productImage">Image URL</label>
+                        <input type="text" id="productImage" class="form-control" placeholder="https://freeimage.host/your-image.jpg">
+                        <small>Upload images to <a href="https://freeimage.host" target="_blank">FreeImage.host</a> and paste the direct link here.</small>
                     </div>
                     <div class="form-group">
                         <label for="productTags">Tags (comma separated)</label>
@@ -1231,14 +995,14 @@
     <script>
         // Firebase Configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyCwll-R6_LNPhCt6bFitr2zu_o2XHM5EqU",
-            authDomain: "alpha-notes-app-550d3.firebaseapp.com",
-            databaseURL: "https://alpha-notes-app-550d3-default-rtdb.firebaseio.com",
-            projectId: "alpha-notes-app-550d3",
-            storageBucket: "alpha-notes-app-550d3.firebasestorage.app",
-            messagingSenderId: "600503443065",
-            appId: "1:600503443065:web:e4c4b225745d5ef6b33ea8"
-        };
+  apiKey: "AIzaSyCwll-R6_LNPhCt6bFitr2zu_o2XHM5EqU",
+  authDomain: "alpha-notes-app-550d3.firebaseapp.com",
+  databaseURL: "https://alpha-notes-app-550d3-default-rtdb.firebaseio.com",
+  projectId: "alpha-notes-app-550d3",
+  storageBucket: "alpha-notes-app-550d3.firebasestorage.app",
+  messagingSenderId: "600503443065",
+  appId: "1:600503443065:web:e4c4b225745d5ef6b33ea8"
+};
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -1253,7 +1017,6 @@
         let currentProduct = null;
         let currentOrder = null;
         let currentPage = 'dashboard';
-        let uploadedImages = [];
 
         // DOM Elements
         const elements = {
@@ -1279,21 +1042,15 @@
             addProductBtn: document.getElementById('addProductBtn'),
             productsTable: document.getElementById('productsTable'),
             productSearch: document.getElementById('productSearch'),
-            productSearchBtn: document.getElementById('productSearchBtn'),
-            clearProductSearch: document.getElementById('clearProductSearch'),
             
             // Orders
             ordersTable: document.getElementById('ordersTable'),
             orderSearch: document.getElementById('orderSearch'),
-            orderSearchBtn: document.getElementById('orderSearchBtn'),
-            clearOrderSearch: document.getElementById('clearOrderSearch'),
             exportOrdersBtn: document.getElementById('exportOrdersBtn'),
             
             // Users
             usersTable: document.getElementById('usersTable'),
             userSearch: document.getElementById('userSearch'),
-            userSearchBtn: document.getElementById('userSearchBtn'),
-            clearUserSearch: document.getElementById('clearUserSearch'),
             exportUsersBtn: document.getElementById('exportUsersBtn'),
             
             // Settings
@@ -1311,13 +1068,6 @@
             productModalTitle: document.getElementById('productModalTitle'),
             cancelProductBtn: document.getElementById('cancelProductBtn'),
             saveProductBtn: document.getElementById('saveProductBtn'),
-            
-            // Image URL Input
-            addImageBtn: document.getElementById('addImageBtn'),
-            imageUrlContainer: document.getElementById('imageUrlContainer'),
-            imageUrlInput: document.getElementById('imageUrlInput'),
-            openFreeImageBtn: document.getElementById('openFreeImageBtn'),
-            imagePreview: document.getElementById('imagePreview'),
             
             orderModal: document.getElementById('orderModal'),
             closeOrderModalBtn: document.getElementById('closeOrderModalBtn'),
@@ -1419,66 +1169,24 @@
             });
             
             // Product search
-            elements.productSearchBtn.addEventListener('click', () => {
-                performProductSearch();
-            });
-            
             elements.productSearch.addEventListener('keyup', (e) => {
                 if (e.key === 'Enter') {
-                    performProductSearch();
+                    searchProducts();
                 }
-                
-                // Show/hide clear button
-                elements.clearProductSearch.style.display = 
-                    elements.productSearch.value.trim() ? 'block' : 'none';
-            });
-            
-            elements.clearProductSearch.addEventListener('click', () => {
-                elements.productSearch.value = '';
-                elements.clearProductSearch.style.display = 'none';
-                renderProducts();
             });
             
             // Order search
-            elements.orderSearchBtn.addEventListener('click', () => {
-                performOrderSearch();
-            });
-            
             elements.orderSearch.addEventListener('keyup', (e) => {
                 if (e.key === 'Enter') {
-                    performOrderSearch();
+                    searchOrders();
                 }
-                
-                // Show/hide clear button
-                elements.clearOrderSearch.style.display = 
-                    elements.orderSearch.value.trim() ? 'block' : 'none';
-            });
-            
-            elements.clearOrderSearch.addEventListener('click', () => {
-                elements.orderSearch.value = '';
-                elements.clearOrderSearch.style.display = 'none';
-                renderOrders();
             });
             
             // User search
-            elements.userSearchBtn.addEventListener('click', () => {
-                performUserSearch();
-            });
-            
             elements.userSearch.addEventListener('keyup', (e) => {
                 if (e.key === 'Enter') {
-                    performUserSearch();
+                    searchUsers();
                 }
-                
-                // Show/hide clear button
-                elements.clearUserSearch.style.display = 
-                    elements.userSearch.value.trim() ? 'block' : 'none';
-            });
-            
-            elements.clearUserSearch.addEventListener('click', () => {
-                elements.userSearch.value = '';
-                elements.clearUserSearch.style.display = 'none';
-                renderUsers();
             });
             
             // Add product button
@@ -1490,16 +1198,6 @@
             elements.closeProductModalBtn.addEventListener('click', closeProductModal);
             elements.cancelProductBtn.addEventListener('click', closeProductModal);
             elements.saveProductBtn.addEventListener('click', saveProduct);
-            
-            // Image URL input
-            elements.addImageBtn.addEventListener('click', () => {
-                elements.imageUrlContainer.style.display = 'flex';
-                elements.addImageBtn.style.display = 'none';
-            });
-            
-            elements.openFreeImageBtn.addEventListener('click', () => {
-                window.open('https://freeimage.host', '_blank');
-            });
             
             // Order modal
             elements.closeOrderModalBtn.addEventListener('click', closeOrderModal);
@@ -1522,56 +1220,6 @@
             // Show selected page
             document.getElementById(pageId + 'Page').classList.add('active');
             currentPage = pageId;
-        }
-
-        // Search Functions
-        function performProductSearch() {
-            const searchTerm = elements.productSearch.value.trim().toLowerCase();
-            
-            if (!searchTerm) {
-                renderProducts();
-                return;
-            }
-            
-            const filteredProducts = products.filter(product => 
-                product.title.toLowerCase().includes(searchTerm) ||
-                product.description.toLowerCase().includes(searchTerm) ||
-                (product.tags && product.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
-            );
-            
-            renderProducts(filteredProducts);
-        }
-
-        function performOrderSearch() {
-            const searchTerm = elements.orderSearch.value.trim().toLowerCase();
-            
-            if (!searchTerm) {
-                renderOrders();
-                return;
-            }
-            
-            const filteredOrders = orders.filter(order => 
-                order.orderId.toLowerCase().includes(searchTerm) ||
-                (order.userEmail && order.userEmail.toLowerCase().includes(searchTerm))
-            );
-            
-            renderOrders(filteredOrders);
-        }
-
-        function performUserSearch() {
-            const searchTerm = elements.userSearch.value.trim().toLowerCase();
-            
-            if (!searchTerm) {
-                renderUsers();
-                return;
-            }
-            
-            const filteredUsers = users.filter(user => 
-                user.email.toLowerCase().includes(searchTerm) ||
-                (user.displayName && user.displayName.toLowerCase().includes(searchTerm))
-            );
-            
-            renderUsers(filteredUsers);
         }
 
         // Load Dashboard Data
@@ -1665,10 +1313,10 @@
         }
 
         // Render Products
-        function renderProducts(productsToRender = products) {
+        function renderProducts() {
             elements.productsTable.innerHTML = '';
             
-            if (productsToRender.length === 0) {
+            if (products.length === 0) {
                 elements.productsTable.innerHTML = `
                     <tr>
                         <td colspan="7" class="empty-state">No products found</td>
@@ -1677,16 +1325,69 @@
                 return;
             }
             
-            productsToRender.forEach(product => {
+            products.forEach(product => {
                 const row = document.createElement('tr');
-                
-                const imageUrl = product.images && product.images.length > 0 ? 
-                    product.images[0] : 
-                    'https://picsum.photos/seed/' + product.id + '/50/50.jpg';
-                
                 row.innerHTML = `
                     <td>
-                        <img src="${imageUrl}" alt="${product.title}" width="50" height="50" style="border-radius: 8px; object-fit: cover;">
+                        <img src="${product.image || 'https://picsum.photos/seed/' + product.id + '/50/50.jpg'}" alt="${product.title}" width="50" height="50">
+                    </td>
+                    <td>${product.title}</td>
+                    <td>${product.category}</td>
+                    <td>${product.price === 0 ? 'FREE' : '₹' + product.price}</td>
+                    <td>${product.stock || 0}</td>
+                    <td>
+                        <span class="status-badge ${product.visible ? 'status-active' : 'status-inactive'}">
+                            ${product.visible ? 'Active' : 'Inactive'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="table-actions-cell">
+                            <button class="action-btn" onclick="editProduct('${product.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" onclick="deleteProduct('${product.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                elements.productsTable.appendChild(row);
+            });
+        }
+
+        // Search Products
+        function searchProducts() {
+            const searchTerm = elements.productSearch.value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                renderProducts();
+                return;
+            }
+            
+            const filteredProducts = products.filter(product => 
+                product.title.toLowerCase().includes(searchTerm) ||
+                product.description.toLowerCase().includes(searchTerm) ||
+                product.category.toLowerCase().includes(searchTerm)
+            );
+            
+            // Render filtered products
+            elements.productsTable.innerHTML = '';
+            
+            if (filteredProducts.length === 0) {
+                elements.productsTable.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="empty-state">No products found</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            filteredProducts.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <img src="${product.image || 'https://picsum.photos/seed/' + product.id + '/50/50.jpg'}" alt="${product.title}" width="50" height="50">
                     </td>
                     <td>${product.title}</td>
                     <td>${product.category}</td>
@@ -1717,12 +1418,6 @@
         function openProductModal(productId = null) {
             currentProduct = productId ? products.find(p => p.id === productId) : null;
             
-            // Reset uploaded images
-            uploadedImages = [];
-            elements.imagePreview.innerHTML = '';
-            elements.imageUrlContainer.style.display = 'none';
-            elements.addImageBtn.style.display = 'block';
-            
             if (currentProduct) {
                 // Edit mode
                 elements.productModalTitle.textContent = 'Edit Product';
@@ -1731,25 +1426,10 @@
                 document.getElementById('productPrice').value = currentProduct.price;
                 document.getElementById('productStock').value = currentProduct.stock || 0;
                 document.getElementById('productDescription').value = currentProduct.description;
+                document.getElementById('productImage').value = currentProduct.image || '';
                 document.getElementById('productTags').value = currentProduct.tags ? currentProduct.tags.join(', ') : '';
                 document.getElementById('productPdf').value = currentProduct.pdf || '';
                 document.getElementById('productVisible').checked = currentProduct.visible !== false;
-                
-                // Show existing images
-                if (currentProduct.images && currentProduct.images.length > 0) {
-                    currentProduct.images.forEach(imageUrl => {
-                        uploadedImages.push(imageUrl);
-                        const previewItem = document.createElement('div');
-                        previewItem.className = 'preview-item';
-                        previewItem.innerHTML = `
-                            <img src="${imageUrl}" alt="Preview">
-                            <button class="preview-remove" onclick="removeImage(this)">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        `;
-                        elements.imagePreview.appendChild(previewItem);
-                    });
-                }
             } else {
                 // Add mode
                 elements.productModalTitle.textContent = 'Add Product';
@@ -1762,51 +1442,7 @@
         // Close Product Modal
         function closeProductModal() {
             elements.productModal.classList.remove('open');
-            uploadedImages = [];
-            elements.imagePreview.innerHTML = '';
-            elements.productForm.reset();
-        }
-
-        // Add Image URL
-        function addImageUrl() {
-            const imageUrl = elements.imageUrlInput.value.trim();
-            
-            if (!imageUrl) {
-                showToast('Please enter an image URL', 'warning');
-                return;
-            }
-            
-            // Add to uploaded images array
-            uploadedImages.push(imageUrl);
-            
-            // Show preview
-            const previewItem = document.createElement('div');
-            previewItem.className = 'preview-item';
-            previewItem.innerHTML = `
-                <img src="${imageUrl}" alt="Preview">
-                <button class="preview-remove" onclick="removeImage(this)">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
-            
-            elements.imagePreview.appendChild(previewItem);
-            
-            // Clear input
-            elements.imageUrlInput.value = '';
-            
-            showToast('Image added successfully', 'success');
-        }
-
-        // Remove Image
-        function removeImage(button) {
-            const previewItem = button.parentElement;
-            const imageUrl = previewItem.querySelector('img').src;
-            
-            // Remove from uploaded images array
-            uploadedImages = uploadedImages.filter(img => img !== imageUrl);
-            
-            // Remove from preview
-            previewItem.remove();
+            currentProduct = null;
         }
 
         // Save Product
@@ -1816,6 +1452,7 @@
             const price = parseFloat(document.getElementById('productPrice').value);
             const stock = parseInt(document.getElementById('productStock').value);
             const description = document.getElementById('productDescription').value.trim();
+            const image = document.getElementById('productImage').value.trim();
             const tags = document.getElementById('productTags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
             const pdf = document.getElementById('productPdf').value.trim();
             const visible = document.getElementById('productVisible').checked;
@@ -1832,7 +1469,7 @@
                     price,
                     stock,
                     description,
-                    images: uploadedImages,
+                    image,
                     tags,
                     pdf,
                     visible,
@@ -1902,10 +1539,10 @@
         }
 
         // Render Orders
-        function renderOrders(ordersToRender = orders) {
+        function renderOrders() {
             elements.ordersTable.innerHTML = '';
             
-            if (ordersToRender.length === 0) {
+            if (orders.length === 0) {
                 elements.ordersTable.innerHTML = `
                     <tr>
                         <td colspan="7" class="empty-state">No orders found</td>
@@ -1914,7 +1551,64 @@
                 return;
             }
             
-            ordersToRender.forEach(order => {
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                
+                const statusClass = order.status === 'paid' ? 'status-paid' : 
+                                   order.status === 'pending' ? 'status-pending' : 'status-failed';
+                
+                row.innerHTML = `
+                    <td>${order.orderId}</td>
+                    <td>${order.userEmail || 'N/A'}</td>
+                    <td>${order.products ? order.products.length : 0} items</td>
+                    <td>₹${order.amount || 0}</td>
+                    <td><span class="order-status ${statusClass}">${order.status}</span></td>
+                    <td>${order.createdAt ? new Date(order.createdAt.toDate()).toLocaleDateString() : 'N/A'}</td>
+                    <td>
+                        <div class="table-actions-cell">
+                            <button class="action-btn" onclick="viewOrder('${order.id}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${order.status === 'pending' ? `
+                                <button class="action-btn" onclick="updateOrderStatus('${order.id}', 'paid')">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+                
+                elements.ordersTable.appendChild(row);
+            });
+        }
+
+        // Search Orders
+        function searchOrders() {
+            const searchTerm = elements.orderSearch.value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                renderOrders();
+                return;
+            }
+            
+            const filteredOrders = orders.filter(order => 
+                order.orderId.toLowerCase().includes(searchTerm) ||
+                (order.userEmail && order.userEmail.toLowerCase().includes(searchTerm))
+            );
+            
+            // Render filtered orders
+            elements.ordersTable.innerHTML = '';
+            
+            if (filteredOrders.length === 0) {
+                elements.ordersTable.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="empty-state">No orders found</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            filteredOrders.forEach(order => {
                 const row = document.createElement('tr');
                 
                 const statusClass = order.status === 'paid' ? 'status-paid' : 
@@ -2062,10 +1756,10 @@
         }
 
         // Render Users
-        function renderUsers(usersToRender = users) {
+        function renderUsers() {
             elements.usersTable.innerHTML = '';
             
-            if (usersToRender.length === 0) {
+            if (users.length === 0) {
                 elements.usersTable.innerHTML = `
                     <tr>
                         <td colspan="6" class="empty-state">No users found</td>
@@ -2074,7 +1768,59 @@
                 return;
             }
             
-            usersToRender.forEach(user => {
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${user.email}</td>
+                    <td>${user.displayName || 'N/A'}</td>
+                    <td>${user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'N/A'}</td>
+                    <td>${user.orderCount || 0}</td>
+                    <td>
+                        <span class="status-badge ${user.isAdmin ? 'status-admin' : 'status-user'}">
+                            ${user.isAdmin ? 'Admin' : 'User'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="table-actions-cell">
+                            <button class="action-btn" onclick="toggleAdminStatus('${user.id}', ${!user.isAdmin})">
+                                <i class="fas fa-${user.isAdmin ? 'user-minus' : 'user-plus'}"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                elements.usersTable.appendChild(row);
+            });
+        }
+
+        // Search Users
+        function searchUsers() {
+            const searchTerm = elements.userSearch.value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                renderUsers();
+                return;
+            }
+            
+            const filteredUsers = users.filter(user => 
+                user.email.toLowerCase().includes(searchTerm) ||
+                (user.displayName && user.displayName.toLowerCase().includes(searchTerm))
+            );
+            
+            // Render filtered users
+            elements.usersTable.innerHTML = '';
+            
+            if (filteredUsers.length === 0) {
+                elements.usersTable.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="empty-state">No users found</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            filteredUsers.forEach(user => {
                 const row = document.createElement('tr');
                 
                 row.innerHTML = `
